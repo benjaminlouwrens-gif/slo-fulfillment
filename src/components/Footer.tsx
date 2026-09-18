@@ -108,7 +108,18 @@ export const Footer: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1 }}
         >
-          <p>© {currentYear} Southern LoCal Fulfillment. All rights reserved.</p>
+          <p>
+            © {currentYear} Southern LoCal Fulfillment. All rights reserved.{' '}
+            •{' '}
+            {/* Unlisted sub-processors/status page covering this site and its sister sites.
+                Not in the nav or the sitemap on purpose. */}
+            <a
+              href="https://slowebdesign.com/1LhYKNpDUb9vRK95brXe"
+              className="text-secondary-300 hover:text-secondary-100 transition-colors"
+            >
+              Status
+            </a>
+          </p>
         </motion.div>
       </div>
     </footer>
