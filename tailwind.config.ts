@@ -8,34 +8,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // NOTE: exact brand colors from the live slocalfulfillment.com site were not
-        // directly inspectable in this session (no visual/DevTools access to the
-        // live page). This is a plausible SoCal-logistics palette (navy = trust/
-        // infrastructure, orange = shipping/action) chosen to match the site's
-        // direct, benefits-driven tone. Check against a live screenshot later.
         primary: {
-          50: '#eef3f8',
-          100: '#dce7f1',
-          200: '#b3c9e0',
-          300: '#8aabce',
-          400: '#4d7cad',
-          500: '#1e3a5f',
-          600: '#182e4c',
-          700: '#122339',
-          800: '#0c1726',
-          900: '#060c13',
+          50: '#edf7f3',
+          100: '#d9eee7',
+          200: '#acd6ca',
+          300: '#7cb8aa',
+          400: '#4f8f82',
+          500: '#1f5751',
+          600: '#194841',
+          700: '#153b36',
+          800: '#102d2a',
+          900: '#091d1b',
         },
         secondary: {
-          50: '#fafaf8',
-          100: '#f5f4f0',
-          200: '#ebe9e1',
-          300: '#e0ddd1',
-          400: '#d5d1c1',
+          50: '#fffaf0',
+          100: '#f9edd7',
+          200: '#eddec3',
+          300: '#dfc9a5',
+          400: '#d1b789',
         },
         accent: {
-          orange: '#e07a2c',
-          orangeDark: '#c4611a',
-          slate: '#64748b',
+          orange: '#ed704d',
+          orangeDark: '#c95439',
+          slate: '#5e6f6a',
         },
       },
       fontFamily: {

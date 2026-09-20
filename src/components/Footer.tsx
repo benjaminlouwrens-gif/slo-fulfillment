@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-700 text-secondary-100 py-16 px-6">
+    <footer className="editorial-footer bg-primary-700 text-secondary-100 py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="grid md:grid-cols-4 gap-12 mb-12"

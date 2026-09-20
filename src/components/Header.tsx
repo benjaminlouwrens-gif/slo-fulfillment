@@ -29,7 +29,7 @@ export const Header: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          Slo Fulfillment
+          SloCal <span> Fulfillment</span>
         </motion.div>
 
         <div className="hidden md:flex gap-8 items-center">

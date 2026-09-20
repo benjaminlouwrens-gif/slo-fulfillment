@@ -33,7 +33,7 @@ const TESTIMONIALS: { quote: string; name: string; role: string }[] = [
 
 export const Testimonials: React.FC = () => {
   return (
-    <section className="py-20 px-6 bg-secondary-100">
+    <section className="editorial-section section-testimonials py-20 px-6 bg-secondary-100">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14 max-w-2xl mx-auto"

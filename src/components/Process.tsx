@@ -37,7 +37,7 @@ export const Process: React.FC = () => {
   };
 
   return (
-    <section id="how-it-works" className="py-20 px-6 bg-white">
+    <section id="how-it-works" className="editorial-section section-process py-20 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14 max-w-2xl mx-auto"

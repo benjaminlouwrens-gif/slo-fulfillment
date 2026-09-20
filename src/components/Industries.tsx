@@ -26,7 +26,7 @@ const INDUSTRIES: { icon: React.ReactNode; title: string; body: string }[] = [
 
 export const Industries: React.FC = () => {
   return (
-    <section id="industries" className="py-20 px-6 bg-secondary-100">
+    <section id="industries" className="editorial-section section-industries py-20 px-6 bg-secondary-100">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14 max-w-2xl mx-auto"

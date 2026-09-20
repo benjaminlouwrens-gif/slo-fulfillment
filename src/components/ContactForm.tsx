@@ -58,7 +58,7 @@ export const ContactForm: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-20 px-6 bg-primary-700">
+    <section id="contact" className="editorial-section section-contact py-20 px-6 bg-primary-700">
       <div className="max-w-3xl mx-auto">
         <motion.div
           className="text-center mb-12"

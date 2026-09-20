@@ -51,7 +51,7 @@ export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-20 px-6 bg-white">
+    <section id="faq" className="editorial-section section-faq py-20 px-6 bg-white">
       <div className="max-w-3xl mx-auto">
         <motion.div
           className="text-center mb-14"

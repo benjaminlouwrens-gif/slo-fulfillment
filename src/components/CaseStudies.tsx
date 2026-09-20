@@ -50,7 +50,7 @@ export const CaseStudies: React.FC = () => {
   };
 
   return (
-    <section id="case-studies" className="py-20 px-6 bg-white">
+    <section id="case-studies" className="editorial-section section-case-studies py-20 px-6 bg-white">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14 max-w-2xl mx-auto"

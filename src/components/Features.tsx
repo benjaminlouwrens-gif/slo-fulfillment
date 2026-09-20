@@ -59,7 +59,7 @@ const STATS: { value: string; label: string }[] = [
 
 export const Features: React.FC = () => {
   return (
-    <section id="features" className="py-20 px-6 bg-secondary-100">
+    <section id="features" className="editorial-section section-features py-20 px-6 bg-secondary-100">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14 max-w-2xl mx-auto"
