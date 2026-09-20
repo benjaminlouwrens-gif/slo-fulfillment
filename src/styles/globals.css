@@ -375,14 +375,155 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .collage-back-button { display: inline-flex; align-items: center; gap: .4rem; border: 0; background: transparent; color: var(--cream); font-weight: 700; cursor: pointer; }
 
 @media (max-width: 640px) {
-  .collage-copy { width: 100%; padding: 4rem .75rem 11rem; overflow: hidden; }
-  .collage-copy h1 { font-size: clamp(3rem, 14vw, 4.8rem); }
-  .collage-kicker { font-size: .58rem; letter-spacing: .1em; }
-  .collage-tagline { max-width: 92%; font-size: .68rem; }
-  .collage-palm-cutout { width: 180px; bottom: 15%; }
-  .collage-mountain-cutout { bottom: 30%; width: 105%; left: -8%; }
-  .collage-warehouse-cutout { left: 7%; width: 90%; bottom: 12%; }
-  .collage-sign-cutout { right: 3%; width: 34vw; }
+  .collage-hero {
+    min-height: 100svh;
+    display: block;
+    padding-top: 4.25rem;
+  }
+
+  .collage-pastel-sun {
+    top: -3%;
+    right: -12%;
+    width: 142px;
+  }
+
+  .collage-beach-horizon {
+    bottom: 0;
+    left: -34%;
+    width: 190%;
+    height: 16%;
+    transform: rotate(-1deg);
+  }
+
+  .collage-mountain-cutout {
+    bottom: 27%;
+    left: -27%;
+    width: 154%;
+    max-width: none;
+  }
+
+  .collage-warehouse-cutout {
+    z-index: 3;
+    left: -17%;
+    bottom: 11%;
+    width: 132%;
+    max-width: none;
+  }
+
+  .collage-copy {
+    position: relative;
+    z-index: 12;
+    width: 100%;
+    max-width: none;
+    padding: 2.25rem .85rem 0;
+    overflow: visible;
+  }
+
+  .collage-kicker {
+    max-width: 250px;
+    margin: 0 auto;
+    font-size: .56rem;
+    letter-spacing: .13em;
+    line-height: 1.35;
+  }
+
+  .collage-copy h1 {
+    margin: .55rem auto 0;
+    font-size: clamp(3.3rem, 16vw, 4.7rem);
+    letter-spacing: -.1em;
+    line-height: .78;
+  }
+
+  .collage-copy h1 span,
+  .collage-copy h1 strong {
+    white-space: nowrap;
+  }
+
+  .collage-road-cta {
+    width: min(88vw, 340px);
+    min-width: 0;
+    margin: 1.5rem auto 0;
+    padding: .7rem 1rem .62rem;
+    border-width: 4px;
+    font-size: .56rem;
+  }
+
+  .collage-road-cta strong {
+    font-size: .88rem;
+  }
+
+  .collage-palm-cutout--left {
+    left: -19%;
+    bottom: 27%;
+    width: 235px;
+  }
+
+  .collage-palm-cutout--right {
+    right: -17%;
+    bottom: 35%;
+    width: 180px;
+  }
+
+  .collage-palm-additional {
+    top: 23%;
+    right: -7%;
+    width: 105px;
+  }
+
+  .collage-sun-paper-cutout {
+    top: 25%;
+    right: -25%;
+    width: 245px;
+  }
+
+  .collage-box-cutout {
+    z-index: 6;
+    bottom: 10%;
+    width: 145px;
+  }
+
+  .collage-box-cutout--one {
+    left: 8%;
+  }
+
+  .collage-box-cutout--two {
+    left: 57%;
+    bottom: 10%;
+    width: 112px;
+  }
+
+  .collage-sign-cutout {
+    z-index: 7;
+    right: -12%;
+    bottom: 24%;
+    width: 170px;
+  }
+
+  .collage-torn-cream {
+    z-index: 8;
+    bottom: 5%;
+    height: 48px;
+  }
+
+  .collage-torn-foreground {
+    z-index: 9;
+  }
+
+  .collage-tape {
+    left: -8%;
+    bottom: -2%;
+    width: 145px;
+  }
+
+  .collage-reference-note {
+    left: -13%;
+    bottom: 24%;
+    width: 155px;
+  }
+
+  .collage-paper-note {
+    display: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -431,6 +572,98 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .editorial-section { padding-left: 1.1rem !important; padding-right: 1.1rem !important; }
   .editorial-section::after { width: 70vw; opacity: .1; }
   .editorial-section .grid > div { box-shadow: 4px 5px 0 rgba(31,87,81,.1); }
+
+  /* Keep the mobile story focused instead of stacking every desktop card. */
+  .section-problem .grid > div:nth-child(n+4),
+  .section-features .grid > div:nth-child(n+4),
+  .section-industries .grid > div:nth-child(n+5),
+  .section-process .grid > div:nth-child(n+3) {
+    display: none;
+  }
+
+  .section-case-studies .grid > div:nth-child(3),
+  .section-testimonials .grid > div:nth-child(n+2) {
+    display: none;
+  }
+
+  .section-problem .grid,
+  .section-features .grid,
+  .section-industries .grid,
+  .section-process .grid {
+    gap: .8rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-problem .grid > div,
+  .section-features .grid > div,
+  .section-industries .grid > div,
+  .section-process .grid > div {
+    padding: 1rem;
+  }
+
+  .section-problem .grid > div p,
+  .section-features .grid > div p,
+  .section-industries .grid > div p,
+  .section-process .grid > div p {
+    font-size: .78rem;
+    line-height: 1.45;
+  }
+
+  .section-problem .grid > div h3,
+  .section-features .grid > div h3,
+  .section-industries .grid > div h3,
+  .section-process .grid > div h3 {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .section-contact {
+    padding-top: 4rem !important;
+    padding-bottom: 4rem !important;
+  }
+
+  .section-contact > div > div:first-child {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-contact h2 {
+    font-size: 2.25rem !important;
+    line-height: 1 !important;
+  }
+
+  .section-contact > div > div:first-child > p:last-child {
+    font-size: .95rem;
+    line-height: 1.45;
+  }
+
+  .section-contact > div > div:nth-child(2) {
+    padding: 1rem !important;
+  }
+
+  .section-contact form {
+    gap: 1rem !important;
+  }
+
+  .section-contact form .grid {
+    gap: 1rem;
+  }
+
+  .section-contact form label {
+    margin-bottom: .35rem;
+    font-size: .78rem;
+  }
+
+  .section-contact form input,
+  .section-contact form select,
+  .section-contact form textarea {
+    min-height: 2.75rem;
+    padding: .7rem .75rem;
+    font-size: .9rem;
+  }
+
+  .section-contact form textarea {
+    min-height: 7rem;
+  }
 }
 
 .visually-hidden-field { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
