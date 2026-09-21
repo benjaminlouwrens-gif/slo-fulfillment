@@ -45,6 +45,22 @@ export default async function handler(
   }
 
   const ip = clientIp(req);
+  const submission = {
+    name,
+    company,
+    email,
+    phone,
+    website,
+    productCategory,
+    monthlyVolume,
+    currentMethod,
+    challenge,
+    notes,
+  };
+
+  let stored = false;
+  let notified = false;
+
   try {
     if (ip && (await tooManyRecent('slof_form_submissions', 'ip', ip, 60, 5))) {
       res.status(429).json({ error: 'rate_limited' });
@@ -65,20 +81,22 @@ export default async function handler(
       user_agent: optionalString(req.headers['user-agent'], 500),
     });
     if (error) throw new Error(error.message);
+    stored = true;
   } catch (err) {
     console.error('inquiry submission failed:', err);
-    res.status(500).json({ error: 'server_error' });
-    return;
   }
 
-  // The lead is stored; a notification hiccup should not turn into a user-facing error.
+  // Keep a second capture path alive if the database is unavailable.
   try {
-    await sendContactNotification({
-      name, company, email, phone, website,
-      productCategory, monthlyVolume, currentMethod, challenge, notes,
-    });
+    await sendContactNotification(submission);
+    notified = true;
   } catch (err) {
     console.error('inquiry notification email failed:', err);
+  }
+
+  if (!stored && !notified) {
+    res.status(500).json({ error: 'server_error' });
+    return;
   }
 
   res.status(200).json({ ok: true });

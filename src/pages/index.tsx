@@ -2,15 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import { Hero } from '@/src/components/Hero';
-import { Problem } from '@/src/components/Problem';
-import { Features } from '@/src/components/Features';
-import { Process } from '@/src/components/Process';
-import { Industries } from '@/src/components/Industries';
-import { CaseStudies } from '@/src/components/CaseStudies';
-import { Testimonials } from '@/src/components/Testimonials';
-import { FAQ } from '@/src/components/FAQ';
-import { ContactForm } from '@/src/components/ContactForm';
-import { Footer } from '@/src/components/Footer';
+import { FulfillmentStory } from '@/src/components/FulfillmentStory';
 
 export default function Home() {
   return (
@@ -62,15 +54,7 @@ export default function Home() {
       <main>
         <Header />
         <Hero />
-        <Problem />
-        <Features />
-        <Process />
-        <Industries />
-        <CaseStudies />
-        <Testimonials />
-        <FAQ />
-        <ContactForm />
-        <Footer />
+        <FulfillmentStory />
       </main>
     </>
   );
