@@ -40,7 +40,7 @@ const assert = require('node:assert/strict');
       if (name === 'desktop') {
         await page.evaluate(() => scrollTo({ top: 0, behavior: 'auto' }));
         await page.waitForTimeout(700);
-        await page.locator('.collage-sign-trigger').evaluate(element => element.click());
+        await page.locator('.sl-local-sign-trigger').evaluate(element => element.click());
         await page.waitForSelector('.pull-secret-countdown');
         assert.equal(await page.locator('.pull-secret-countdown strong').textContent(), '5');
         await page.waitForTimeout(5200);

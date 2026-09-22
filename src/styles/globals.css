@@ -292,9 +292,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   filter: drop-shadow(5px 6px 0 rgba(23,37,35,.18));
   transform: translateY(0) rotate(4deg);
 }
-.collage-sign-trigger { position: absolute; z-index: 11; right: 0; bottom: 0; width: 26%; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
-.collage-sign-trigger .collage-sign-cutout { position: relative; right: auto; bottom: auto; width: 100%; display: block; }
-.collage-sign-trigger:hover, .collage-sign-trigger:active { background: transparent; transform: none; }
 .collage-torn-foreground {
   position: absolute;
   z-index: 6;
@@ -361,7 +358,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .surf-transition--active .surf-scene { height: 100svh; }
 .surf-transition--active + .sl-story { position: relative; margin-top: -100svh; }
 .surf-transition--active .surf-scene { pointer-events: auto; }
-.sl-local-sign { display: block; width: min(300px, 75%); height: auto; margin: 36px 0 0 12px; transform: rotate(-6deg); pointer-events: none; }
+.sl-local-sign-trigger { display: block; width: min(300px, 75%); margin: 36px 0 0 12px; padding: 0; border: 0; background: transparent; appearance: none; transform: rotate(-6deg); cursor: pointer; }
+.sl-local-sign-trigger:hover, .sl-local-sign-trigger:active { background: transparent; transform: rotate(-6deg); }
+.sl-local-sign { display: block; width: 100%; height: auto; margin: 0; pointer-events: auto; }
 
 @media (min-width: 641px) {
   .collage-hero .collage-palm-cutout--right { bottom: 0; right: -3%; z-index: 10; }
@@ -988,7 +987,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-contact-products { height: 160px; max-width: 260px; margin: 20px 0; }
   .sl-contact-products .sl-product-croissant { width: 160px; }
   .sl-contact-products .sl-product-skincare { width: 145px; right: 0; }
-  .collage-sign-trigger { width: 45%; }
   .sl-lotion-drop { width: 145px; height: 225px; }
   .sl-lotion-splash { width: 185px; height: 130px; }
   .pull-secret-obunga { width: min(58vw, 220px); }

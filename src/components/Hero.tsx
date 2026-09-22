@@ -41,7 +41,7 @@ export const Hero: React.FC = () => {
 
       <img className="collage-box-cutout collage-box-cutout--one" src={`${cutoutPath}/boxes-cutout.png`} alt="" aria-hidden="true" />
       <img className="collage-box-cutout collage-box-cutout--two" src={`${cutoutPath}/forklift-cutout.png`} alt="" aria-hidden="true" />
-      <button type="button" className="collage-sign-trigger" aria-label="Open the hidden product pull page" onClick={() => window.dispatchEvent(new Event('slocal:open-pull-secret'))}><img className="collage-sign-cutout" src={`${cutoutPath}/road-sign-cutout.png`} alt="" aria-hidden="true" /></button>
+      <img className="collage-sign-cutout" src={`${cutoutPath}/road-sign-cutout.png`} alt="" aria-hidden="true" />
       <img className="collage-torn-cream" src={`${cutoutPath}/torn-paper-01.png`} alt="" aria-hidden="true" />
       <img className="collage-torn-foreground" src={`${cutoutPath}/torn-paper-foreground.png`} alt="" aria-hidden="true" />
       <img className="collage-tape" src={`${cutoutPath}/reference-tape.png`} alt="" aria-hidden="true" />
