@@ -397,12 +397,12 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-pump-window { position: absolute; inset: 0 0 72.3%; overflow: hidden; }
 .sl-pump-head { position: absolute; inset: 0; height: 361%; background: url('/assets/editorial-sourced/product-cutouts.png') 50% 0 / 300% 200%; transform: translateY(var(--pump-press, 0px)); }
 .sl-pump-body { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') 50% 0 / 300% 200%; clip-path: inset(27.7% 0 0); }
-.sl-pump-nozzle { position: absolute; left: 31%; top: 14%; width: 1px; height: 1px; }
-.sl-lotion-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }
+.sl-pump-nozzle { position: absolute; left: 18%; top: 8%; width: 1px; height: 1px; }
+.sl-lotion-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
 .sl-lotion-drop, .sl-lotion-splash { position: absolute; top: 0; left: 0; opacity: 0; transform-origin: 0 0; color: #4fb7c4; filter: none; }
 .sl-lotion-drop { width: 150px; height: 220px; transform-origin: 50% 0; }
 .sl-lotion-drop svg { width: 100%; height: 100%; }
-.sl-lotion-splash { width: 220px; height: 160px; transform-origin: 50% 50%; }
+.sl-lotion-splash { width: 72px; height: 52px; transform-origin: 0 0; }
 .sl-lotion-splash svg { width: 100%; height: 100%; }
 .lotion-pop-line { fill: none; stroke: currentColor; stroke-width: 7; stroke-linecap: round; }
 #lotion-target { display: inline-block; transform-origin: 50% 100%; }
@@ -882,12 +882,12 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-pump-window { position: absolute; inset: 0 0 72.3%; overflow: hidden; }
 .sl-pump-body { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; clip-path: inset(27.7% 0 0); }
 .sl-pump-head { position: absolute; inset: 0; height: 361%; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; transform: translateY(var(--pump-press)); transition: transform .12s steps(2, end); }
-.sl-pump-nozzle { position: absolute; left: 31%; top: 14%; width: 1px; height: 1px; }
-.sl-lotion-overlay { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+.sl-pump-nozzle { position: absolute; left: 18%; top: 8%; width: 1px; height: 1px; }
+.sl-lotion-overlay { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
 .sl-lotion-drop, .sl-lotion-splash { position: absolute; left: 0; top: 0; color: #4fb7c4; filter: none; }
 .sl-lotion-drop svg, .sl-lotion-splash svg { display: block; width: 100%; height: 100%; overflow: visible; fill: currentColor; }
 .sl-lotion-drop { opacity: 0; }
-.sl-lotion-splash { width: 220px; height: 160px; opacity: 0; transform-origin: 50% 50%; }
+.sl-lotion-splash { width: 72px; height: 52px; opacity: 0; transform-origin: 0 0; }
 .lotion-pop-line { fill: none; stroke: currentColor; stroke-width: 7; stroke-linecap: round; }
 .pull-secret { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: #fff; color: #101010; }
 .pull-secret--approach { background: #161914 url('/assets/easter-egg/warehouse-background.jpg') center / cover no-repeat; color: #f7f5ef; }
@@ -993,7 +993,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-contact-products .sl-product-croissant { width: 160px; }
   .sl-contact-products .sl-product-skincare { width: 145px; right: 0; }
   .sl-lotion-drop { width: 125px; height: 185px; }
-  .sl-lotion-splash { width: 185px; height: 135px; }
+  .sl-lotion-splash { width: 62px; height: 45px; }
   .pull-secret-countdown-scene { width: 100vw; }
   .pull-secret-loader-image { width: 100%; height: auto; object-fit: contain; object-position: center; }
   .pull-secret-countdown { right: 5vw; bottom: 8vh; }
