@@ -12,12 +12,12 @@ const assert = require('node:assert/strict');
       await page.waitForSelector('.surf-transition--active');
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
       await page.mouse.wheel(0, 1);
-      await page.waitForTimeout(1600);
+      await page.waitForTimeout(2200);
       assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'complete');
       await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
       await page.waitForTimeout(250);
       await page.mouse.wheel(0, -160);
-      await page.waitForTimeout(1600);
+      await page.waitForTimeout(2200);
       assert.ok((await page.evaluate(() => window.scrollY)) <= 2, 'upward wave scroll did not snap to the top');
       assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'idle');
       const bounds = await page.evaluate(() => {

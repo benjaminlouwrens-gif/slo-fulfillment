@@ -166,7 +166,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       lockScroll = true;
       root.current.dataset.transition = 'running';
       const startedAt = performance.now();
-      const duration = 1350;
+      const duration = 1800;
       const advance = (now: number) => {
         if (stopped) return;
         const progress = clamp((now - startedAt) / duration);
