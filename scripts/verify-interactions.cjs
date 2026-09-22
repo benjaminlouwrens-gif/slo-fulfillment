@@ -31,7 +31,7 @@ const assert = require('node:assert/strict');
           return value;
         };
         return {
-          start: top(document.getElementById('services')) + 130,
+            start: top(document.getElementById('services')),
           end: top(document.getElementById('lotion-target')) - innerHeight * .54,
         };
       });

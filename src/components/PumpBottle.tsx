@@ -29,10 +29,10 @@ export function PumpBottle() {
       const target = document.getElementById('lotion-target');
       const section = document.getElementById('services');
       if (!bottle.current || !target || !section) return;
-      const start = documentTop(section) + 130;
+      const start = documentTop(section);
       const end = documentTop(target) - innerHeight * .54;
       const progress = clamp((scrollY - start) / Math.max(360, end - start));
-      const press = clamp((progress - .05) / .12) * (1 - clamp((progress - .62) / .2));
+      const press = clamp((progress - .02) / .12) * (1 - clamp((progress - .72) / .18));
       bottle.current.style.setProperty('--pump-press', reduced.matches ? '0px' : `${press * 24}px`);
       bottle.current.dataset.progress = progress.toFixed(3);
       bottle.current.dataset.pumpPhase = press > .02 ? 'pressing' : 'resting';
@@ -41,19 +41,19 @@ export function PumpBottle() {
 
       const from = nozzle.current.getBoundingClientRect();
       const to = target.getBoundingClientRect();
-      const falling = clamp((progress - .25) / .47);
+      const falling = clamp((progress - .18) / .54);
       const x = from.left + (to.left + to.width / 2 - from.left) * falling;
       const y = from.top + (to.top + 5 - from.top) * falling;
-      const forming = clamp((progress - .1) / .15);
-      const visible = !reduced.matches && progress > .1 && progress < .74;
+      const forming = clamp(progress / .18);
+      const visible = !reduced.matches && progress > .015 && progress < .72;
       drop.current.style.opacity = visible ? '1' : '0';
-      drop.current.style.transform = `translate(${x}px, ${y}px) scale(${progress < .25 ? .2 + forming * 1.15 : 1.15})`;
-      drop.current.dataset.phase = progress < .1 ? 'idle' : progress < .25 ? 'forming' : progress < .74 ? 'falling' : progress < .88 ? 'impact' : 'gone';
+      drop.current.style.transform = `translate(${x}px, ${y}px) scale(${progress < .18 ? .35 + forming * .65 : 1})`;
+      drop.current.dataset.phase = progress < .015 ? 'idle' : progress < .18 ? 'forming' : progress < .72 ? 'falling' : progress < .9 ? 'impact' : 'gone';
 
-      const pop = clamp((progress - .74) / .14);
-      splash.current.style.opacity = !reduced.matches && progress >= .74 && progress < .94 ? String(1 - pop) : '0';
-      splash.current.style.transform = `translate(${to.left + to.width / 2}px, ${to.top + 5}px) scale(${.45 + pop * 2.15})`;
-      target.style.transform = reduced.matches || progress < .74 || progress >= .94 ? '' : `scale(${1 + Math.sin(pop * Math.PI) * .1}, ${1 - Math.sin(pop * Math.PI) * .16})`;
+      const pop = clamp((progress - .72) / .18);
+      splash.current.style.opacity = !reduced.matches && progress >= .72 && progress < .9 ? String(1 - pop * .85) : '0';
+      splash.current.style.transform = `translate(${to.left + to.width / 2}px, ${to.top + 5}px) scale(${1.1 - pop * .55})`;
+      target.style.transform = reduced.matches || progress < .72 || progress >= .9 ? '' : `scale(${1 + Math.sin(pop * Math.PI) * .06}, ${1 - Math.sin(pop * Math.PI) * .08})`;
     };
     const schedule = () => { if (!raf) raf = requestAnimationFrame(draw); };
     addEventListener('scroll', schedule, { passive: true });
