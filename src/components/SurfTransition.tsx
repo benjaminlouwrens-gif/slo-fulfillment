@@ -21,12 +21,18 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     let target = 0;
     let failures = 0;
     let failed = false;
-    let snapped = false;
+    let transitionStarted = false;
+    let queuedStart = false;
+    let lockScroll = false;
+    let animationRaf = 0;
+    let lastScrollY = window.scrollY;
     const variant = window.innerWidth <= 640 ? 'mobile' : 'desktop';
     const limit = variant === 'mobile' ? 14 : 24;
 
     const disable = () => {
       enabled = false;
+      lockScroll = false;
+      cancelAnimationFrame(animationRaf);
       setActive(false);
       scene.current?.style.removeProperty('opacity');
       scene.current?.style.removeProperty('pointer-events');
@@ -55,6 +61,10 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
           requestAnimationFrame(() => {
             if (window.location.hash) document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
             schedule();
+            if (queuedStart) {
+              queuedStart = false;
+              beginTransition();
+            }
           });
         }
         if (index === target) schedule();
@@ -138,17 +148,83 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       canvas.current.dataset.cachedFrames = String(cache.size);
     };
     const schedule = () => { if (!raf && !stopped) raf = requestAnimationFrame(draw); };
-    const snapThroughWave = (event: WheelEvent) => {
-      if (!enabled || failed || reduced.matches || !root.current || event.deltaY <= 8 || snapped) return;
+    const beginTransition = () => {
+      if (!enabled || failed || reduced.matches || transitionStarted || !root.current) return;
       const rect = root.current.getBoundingClientRect();
-      if (Math.abs(rect.top) > 8) return;
+      if (Math.abs(rect.top) > 14) return;
+      transitionStarted = true;
+      lockScroll = true;
+      root.current.dataset.transition = 'running';
+      const from = window.scrollY;
+      const rootTop = rect.top + from;
+      const destination = Math.max(from, rootTop + root.current.offsetHeight - window.innerHeight);
+      const startedAt = performance.now();
+      const duration = 1350;
+      const advance = (now: number) => {
+        if (stopped) return;
+        const progress = clamp((now - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        window.scrollTo(0, from + (destination - from) * eased);
+        schedule();
+        if (progress < 1) {
+          animationRaf = requestAnimationFrame(advance);
+          return;
+        }
+        window.scrollTo(0, destination);
+        lockScroll = false;
+        root.current?.setAttribute('data-transition', 'complete');
+        schedule();
+      };
+      animationRaf = requestAnimationFrame(advance);
+    };
+    const requestStart = () => {
+      if (!enabled) {
+        queuedStart = true;
+        return;
+      }
+      beginTransition();
+    };
+    const snapThroughWave = (event: WheelEvent) => {
+      if (reduced.matches || failed || !root.current) return;
+      if (lockScroll) {
+        event.preventDefault();
+        return;
+      }
+      if (!enabled || transitionStarted || event.deltaY <= 0) return;
+      const rect = root.current.getBoundingClientRect();
+      if (Math.abs(rect.top) > 14) return;
       event.preventDefault();
-      snapped = true;
-      window.scrollTo({ top: root.current.offsetTop + root.current.offsetHeight - window.innerHeight, behavior: 'smooth' });
+      requestStart();
+    };
+    const snapTouchStart = (event: TouchEvent) => { touchStartY = event.touches[0]?.clientY ?? 0; };
+    const snapTouchMove = (event: TouchEvent) => {
+      if (reduced.matches || failed || !root.current) return;
+      const currentY = event.touches[0]?.clientY ?? touchStartY;
+      if (lockScroll) {
+        event.preventDefault();
+        return;
+      }
+      if (!enabled || transitionStarted || touchStartY - currentY <= 10) return;
+      if (Math.abs(root.current.getBoundingClientRect().top) > 14) return;
+      event.preventDefault();
+      requestStart();
+    };
+    const onStartRequest = () => requestStart();
+    const onScroll = () => {
+      if (!lockScroll && transitionStarted && root.current && window.scrollY < lastScrollY && window.scrollY <= root.current.offsetTop + 8) {
+        transitionStarted = false;
+        root.current.dataset.transition = 'idle';
+      }
+      lastScrollY = window.scrollY;
+      schedule();
     };
     const preference = () => { if (reduced.matches) disable(); };
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('wheel', snapThroughWave, { passive: false });
+    let touchStartY = 0;
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('wheel', snapThroughWave, { passive: false, capture: true });
+    window.addEventListener('touchstart', snapTouchStart, { passive: true });
+    window.addEventListener('touchmove', snapTouchMove, { passive: false });
+    window.addEventListener('slocal:start-surf', onStartRequest);
     window.addEventListener('resize', schedule);
     reduced.addEventListener('change', preference);
     if (!reduced.matches) {
@@ -161,9 +237,13 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       stopped = true;
       controller.abort();
       cancelAnimationFrame(raf);
+      cancelAnimationFrame(animationRaf);
       cache.forEach(bitmap => bitmap.close());
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('wheel', snapThroughWave);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('wheel', snapThroughWave, true);
+      window.removeEventListener('touchstart', snapTouchStart);
+      window.removeEventListener('touchmove', snapTouchMove);
+      window.removeEventListener('slocal:start-surf', onStartRequest);
       window.removeEventListener('resize', schedule);
       reduced.removeEventListener('change', preference);
     };
