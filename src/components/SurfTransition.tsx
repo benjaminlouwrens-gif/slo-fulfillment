@@ -63,7 +63,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
             schedule();
             if (queuedStart) {
               queuedStart = false;
-              beginTransition();
+              beginTransition('forward');
             }
           });
         }
@@ -155,12 +155,13 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const destination = Math.max(top, top + root.current.offsetHeight - window.innerHeight);
       return { top, destination };
     };
-    const beginTransition = () => {
-      if (!enabled || failed || reduced.matches || transitionStarted || !root.current) return;
+    const beginTransition = (direction: 'forward' | 'backward') => {
+      if (!enabled || failed || reduced.matches || transitionStarted || !root.current) return false;
       const bounds = getBounds();
-      if (!bounds) return;
+      if (!bounds) return false;
       const from = Math.max(bounds.top, Math.min(window.scrollY, bounds.destination));
-      if (from >= bounds.destination - 1) return;
+      const destination = direction === 'forward' ? bounds.destination : bounds.top;
+      if (direction === 'forward' ? from >= destination - 1 : from <= destination + 1) return false;
       transitionStarted = true;
       lockScroll = true;
       root.current.dataset.transition = 'running';
@@ -170,25 +171,27 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         if (stopped) return;
         const progress = clamp((now - startedAt) / duration);
         const eased = 1 - Math.pow(1 - progress, 3);
-        window.scrollTo(0, from + (bounds.destination - from) * eased);
+        window.scrollTo(0, from + (destination - from) * eased);
         schedule();
         if (progress < 1) {
           animationRaf = requestAnimationFrame(advance);
           return;
         }
-        window.scrollTo(0, bounds.destination);
+        window.scrollTo(0, destination);
         lockScroll = false;
-        root.current?.setAttribute('data-transition', 'complete');
+        transitionStarted = direction === 'forward';
+        root.current?.setAttribute('data-transition', direction === 'forward' ? 'complete' : 'idle');
         schedule();
       };
       animationRaf = requestAnimationFrame(advance);
+      return true;
     };
-    const requestStart = () => {
+    const requestStart = (direction: 'forward' | 'backward') => {
       if (!enabled) {
-        queuedStart = true;
-        return;
+        if (direction === 'forward') queuedStart = true;
+        return false;
       }
-      beginTransition();
+      return beginTransition(direction);
     };
     const snapThroughWave = (event: WheelEvent) => {
       if (reduced.matches || failed || !root.current) return;
@@ -196,12 +199,14 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         event.preventDefault();
         return;
       }
-      if (!enabled || event.deltaY <= 0) return;
+      if (!enabled || event.deltaY === 0) return;
       const bounds = getBounds();
-      if (!bounds || window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1) return;
-      event.preventDefault();
+      if (!bounds) return;
+      const direction = event.deltaY > 0 ? 'forward' : 'backward';
+      if (direction === 'forward' && (window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1)) return;
+      if (direction === 'backward' && (window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
       transitionStarted = false;
-      requestStart();
+      if (requestStart(direction)) event.preventDefault();
     };
     const snapTouchStart = (event: TouchEvent) => { touchStartY = event.touches[0]?.clientY ?? 0; };
     const snapTouchMove = (event: TouchEvent) => {
@@ -211,14 +216,16 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         event.preventDefault();
         return;
       }
-      if (!enabled || touchStartY - currentY <= 10) return;
+      if (!enabled || Math.abs(touchStartY - currentY) <= 10) return;
       const bounds = getBounds();
-      if (!bounds || window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1) return;
-      event.preventDefault();
+      if (!bounds) return;
+      const direction = touchStartY - currentY > 0 ? 'forward' : 'backward';
+      if (direction === 'forward' && (window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1)) return;
+      if (direction === 'backward' && (window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
       transitionStarted = false;
-      requestStart();
+      if (requestStart(direction)) event.preventDefault();
     };
-    const onStartRequest = () => requestStart();
+    const onStartRequest = () => requestStart('forward');
     const onScroll = () => {
       if (!lockScroll && transitionStarted && root.current && window.scrollY < lastScrollY && window.scrollY <= root.current.offsetTop + 8) {
         transitionStarted = false;

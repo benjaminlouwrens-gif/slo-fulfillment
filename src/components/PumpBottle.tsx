@@ -28,13 +28,16 @@ export function PumpBottle() {
       raf = 0;
       const target = document.getElementById('lotion-target');
       const section = document.getElementById('services');
-      if (!bottle.current || !nozzle.current || !drop.current || !splash.current || !target || !section) return;
+      if (!bottle.current || !target || !section) return;
       const start = documentTop(section) + 130;
       const end = documentTop(target) - innerHeight * .54;
       const progress = clamp((scrollY - start) / Math.max(360, end - start));
-      const press = clamp(progress / .15) * (1 - clamp((progress - .28) / .16));
+      const press = clamp((progress - .05) / .12) * (1 - clamp((progress - .62) / .2));
       bottle.current.style.setProperty('--pump-press', reduced.matches ? '0px' : `${press * 24}px`);
       bottle.current.dataset.progress = progress.toFixed(3);
+      bottle.current.dataset.pumpPhase = press > .02 ? 'pressing' : 'resting';
+
+      if (!nozzle.current || !drop.current || !splash.current) return;
 
       const from = nozzle.current.getBoundingClientRect();
       const to = target.getBoundingClientRect();
@@ -72,8 +75,8 @@ export function PumpBottle() {
       <span className="sl-pump-body" />
     </span>
     {mounted && createPortal(<div className="sl-lotion-overlay" aria-hidden="true">
-      <div ref={drop} className="sl-lotion-drop"><svg viewBox="0 0 190 290"><path d="M96 5C74 31 57 61 51 101C44 150 48 207 58 242C68 278 112 291 142 270C166 253 175 220 174 166C174 110 165 68 134 35C120 20 107 9 96 5Z" /></svg></div>
-      <div ref={splash} className="sl-lotion-splash"><svg viewBox="0 0 190 130"><path d="M85 112C73 105 67 91 71 78C78 58 105 60 111 79C115 93 105 108 85 112Z"/><path d="M32 77L4 65L7 57L40 66Z"/><path d="M147 67L183 48L187 57L153 78Z"/><path d="M91 49L95 8L105 10L103 51Z"/></svg></div>
+      <div ref={drop} className="sl-lotion-drop"><svg viewBox="0 0 190 290"><path d="M95 8C48 66 25 119 25 177C25 239 55 278 95 278C135 278 165 239 165 177C165 119 142 66 95 8Z" /></svg></div>
+      <div ref={splash} className="sl-lotion-splash"><svg viewBox="0 0 220 160"><path d="M31 77C37 50 55 44 73 53C88 61 94 41 110 43C126 45 130 62 146 57C164 51 184 66 187 84C190 103 174 119 153 113C133 107 123 127 104 120C87 114 75 130 57 119C39 109 25 97 31 77Z"/><path className="lotion-pop-line" d="M30 72L7 55M42 113L21 137M83 126L75 154M139 125L148 153M179 105L210 121M181 69L213 56" /></svg></div>
     </div>, document.body)}
   </>;
 }

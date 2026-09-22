@@ -55,11 +55,12 @@ export function PullSecret({ onReset }: PullSecretProps) {
     <audio ref={constructionAudio} src="/assets/easter-egg/construction-site-sounds.mp3" preload="auto" />
     <audio ref={eerieAudio} src="/assets/easter-egg/eerie-warehouse-drone.mp3" preload="auto" loop />
     {phase === 'countdown' && <div className="pull-secret-countdown-scene">
-      <img className="pull-secret-loader-image" src="/assets/easter-egg/sorry-bro-loader.png" alt="Sorry bro, your meme is still under construction" />
+      <img className="pull-secret-loader-image" src="/assets/easter-egg/sorry-bro-loader.png" alt="Sorry Bro" />
+      <div className="pull-secret-loader-copy">your product is<br />waiting to get pulled.</div>
+      <div className="pull-secret-loader-timer-mask" aria-hidden="true" />
       <div className="pull-secret-countdown" aria-live="polite"><p>Current wait time</p><strong>00:0{countdown}</strong></div>
     </div>}
     {phase === 'approach' && <div className="pull-secret-warehouse-scene">
-      <div className="pull-secret-warehouse-copy">Your product is waiting to get pulled.</div>
       <img className="pull-secret-obunga" src="/assets/easter-egg/obunga-transparent.png" alt="" />
     </div>}
   </div>;

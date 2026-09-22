@@ -10,19 +10,16 @@ const assert = require('node:assert/strict');
       page.on('pageerror', error => errors.push(error.message));
       await page.goto(process.env.PREVIEW_URL || 'http://127.0.0.1:8788');
       await page.waitForSelector('.surf-transition--active');
-      if (name === 'desktop') {
-        await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
-        await page.mouse.wheel(0, 1);
-        await page.waitForTimeout(1600);
-        assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'complete');
-        await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
-        await page.waitForTimeout(250);
-        const beforeUp = Number(await page.locator('.surf-canvas').getAttribute('data-rendered-frame'));
-        await page.mouse.wheel(0, -160);
-        await page.waitForTimeout(180);
-        assert.ok((await page.evaluate(() => window.scrollY)) < 1200, 'upward wave scroll did not remain manual');
-        assert.ok(Number(await page.locator('.surf-canvas').getAttribute('data-rendered-frame')) < beforeUp, 'upward wave scroll did not reverse the frame');
-      }
+      await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
+      await page.mouse.wheel(0, 1);
+      await page.waitForTimeout(1600);
+      assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'complete');
+      await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
+      await page.waitForTimeout(250);
+      await page.mouse.wheel(0, -160);
+      await page.waitForTimeout(1600);
+      assert.ok((await page.evaluate(() => window.scrollY)) <= 2, 'upward wave scroll did not snap to the top');
+      assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'idle');
       const bounds = await page.evaluate(() => {
         const top = (element) => {
           let value = 0;
