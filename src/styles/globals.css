@@ -24,7 +24,7 @@
 .collage-moon img { width: 100%; height: 100%; object-fit: cover; }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
 body {
   margin: 0;
   background: var(--cream);
@@ -111,6 +111,8 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   border-bottom: 4px solid rgba(188, 101, 30, .16);
   transform: rotate(11deg);
 }
+.collage-pastel-sun { background: url('/assets/collage/approved-cutouts/pastel-orange-sun.png') center / contain no-repeat; border: 0; box-shadow: none; border-radius: 0; opacity: 1; }
+.collage-pastel-sun::after { display: none; }
 .collage-beach-horizon {
   position: absolute;
   z-index: 8;
@@ -290,6 +292,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   filter: drop-shadow(5px 6px 0 rgba(23,37,35,.18));
   transform: translateY(0) rotate(4deg);
 }
+.collage-sign-trigger { position: absolute; z-index: 11; right: 0; bottom: 0; width: 26%; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
+.collage-sign-trigger .collage-sign-cutout { position: relative; right: auto; bottom: auto; width: 100%; display: block; }
+.collage-sign-trigger:hover, .collage-sign-trigger:active { background: transparent; transform: none; }
 .collage-torn-foreground {
   position: absolute;
   z-index: 6;
@@ -347,7 +352,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   transform: translateX(-50%);
   cursor: pointer;
 }
-.surf-transition { position: relative; }
+.surf-transition { position: relative; scroll-snap-align: start; scroll-snap-stop: always; }
 .surf-stage { position: relative; }
 .surf-scene { position: relative; }
 .surf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
@@ -376,6 +381,29 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-product-sneakers { animation-duration: 19.1s; animation-delay: -11.2s; }
 .sl-product-croissant { animation-duration: 15.9s; animation-delay: -3.7s; }
 .sl-product--visible { animation-play-state: running; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .sl-story .sl-product:hover {
+    animation: product-hover-shake .24s steps(1, end) infinite;
+    animation-play-state: running;
+  }
+}
+@keyframes product-hover-shake {
+  0%, 100% { translate: -2px 1px; rotate: -2deg; }
+  15% { translate: 3px -2px; rotate: 2.5deg; }
+  35% { translate: -4px 0; rotate: -1deg; }
+  55% { translate: 2px 3px; rotate: 2deg; }
+  75% { translate: 0 -3px; rotate: -2.5deg; }
+}
+.sl-pump-bottle { background: none !important; }
+.sl-pump-window { position: absolute; inset: 0 0 72.3%; overflow: hidden; }
+.sl-pump-head { position: absolute; inset: 0; height: 361%; background: url('/assets/editorial-sourced/product-cutouts.png') 50% 0 / 300% 200%; transform: translateY(var(--pump-press, 0px)); }
+.sl-pump-body { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') 50% 0 / 300% 200%; clip-path: inset(27.7% 0 0); }
+.sl-pump-nozzle { position: absolute; left: 31%; top: 14%; width: 1px; height: 1px; }
+.sl-lotion-overlay { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }
+.sl-lotion-drop, .sl-lotion-splash { position: absolute; top: 0; left: 0; opacity: 0; transform-origin: 0 0; }
+.sl-lotion-drop svg { width: 27px; height: 47px; margin-left: -13px; }
+.sl-lotion-splash svg { width: 90px; height: 63px; margin: -35px 0 0 -45px; }
+#lotion-target { display: inline-block; transform-origin: 50% 100%; }
 @keyframes product-paper-nudge {
   0%, 17%, 31%, 63%, 100% { translate: 0 0; rotate: 0deg; }
   18% { translate: -2px -3px; rotate: -1.2deg; }
@@ -807,8 +835,16 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-product-headphones { background-position: 100% 0; }
 .sl-product-sneakers { background-position: 0 100%; }
 .sl-product-croissant { background-position: 50% 100%; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .sl-story .sl-product:hover { animation: product-hover-shake .07s steps(2, end) infinite; }
+}
+@keyframes product-hover-shake {
+  0% { translate: -2px 1px; rotate: -1deg; }
+  50% { translate: 3px -1px; rotate: 1deg; }
+  100% { translate: -1px 2px; rotate: 0deg; }
+}
 .sl-intro { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 820px; padding: 160px 24px 120px; background: #efbdd0; overflow: hidden; }
-.sl-intro .sl-product { position: absolute; pointer-events: none; }
+.sl-intro .sl-product { position: absolute; pointer-events: auto; }
 .sl-intro .sl-product-fruit { width: 260px; left: -28px; top: 20px; transform: rotate(-22deg); }
 .sl-intro .sl-product-headphones { width: 290px; right: -40px; top: 40px; transform: rotate(23deg); }
 .sl-intro .sl-product-sneakers { width: 255px; left: 10%; bottom: -10px; transform: rotate(24deg); }
@@ -840,6 +876,38 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-contact-products { position: relative; width: 100%; max-width: 390px; height: 310px; margin: 30px 0; }
 .sl-contact-products .sl-product-croissant { position: absolute; width: 270px; left: 0; bottom: 0; transform: rotate(-15deg); }
 .sl-contact-products .sl-product-skincare { position: absolute; width: 240px; right: -25px; top: 0; transform: rotate(18deg); }
+.sl-pump-bottle { --pump-press: 0px; position: relative; overflow: visible; background: none; clip-path: none; }
+.sl-pump-window { position: absolute; inset: 0; overflow: hidden; clip-path: inset(0 28% 0 28%); }
+.sl-pump-body { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; clip-path: inset(23% 28% 0 28%); }
+.sl-pump-head { position: absolute; inset: 0; transform: translateY(var(--pump-press)); transition: transform .12s steps(2, end); }
+.sl-pump-nozzle { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; clip-path: inset(0 28% 67% 28%); }
+.sl-lotion-overlay { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+.sl-lotion-drop, .sl-lotion-splash { position: absolute; left: 0; top: 0; width: 190px; height: 290px; transform-origin: 50% 12%; color: #a7e9e0; filter: drop-shadow(4px 5px 0 rgba(23,37,35,.1)); }
+.sl-lotion-drop svg, .sl-lotion-splash svg { display: block; width: 100%; height: 100%; overflow: visible; fill: currentColor; }
+.sl-lotion-drop { opacity: 0; }
+.sl-lotion-splash { width: 240px; height: 165px; opacity: 0; transform-origin: 50% 50%; }
+.pull-secret { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: #f7f5ef; color: #101010; }
+.pull-secret--approach { background: #e8e7df; }
+.pull-secret--black { background: #000; }
+.pull-secret-countdown { display: grid; justify-items: center; gap: 10px; font-family: Arial, Helvetica, sans-serif; text-align: center; }
+.pull-secret-countdown p { max-width: 15ch; margin: 0; font-size: clamp(28px, 5vw, 64px); font-weight: 900; line-height: .95; }
+.pull-secret-countdown strong { font-size: clamp(90px, 20vw, 240px); line-height: .75; font-weight: 900; }
+.pull-secret-countdown span { font-size: 13px; text-transform: uppercase; letter-spacing: .18em; }
+.pull-secret-obunga { width: min(27vw, 250px); max-height: 66vh; object-fit: contain; animation: obunga-approach 4.1s steps(1, end) forwards; will-change: transform; }
+@keyframes obunga-approach {
+  0% { transform: translate(-44vw, 16vh) rotate(-9deg) scale(.32); }
+  9% { transform: translate(-25vw, 8vh) rotate(7deg) scale(.38); }
+  18% { transform: translate(-7vw, 20vh) rotate(-12deg) scale(.43); }
+  27% { transform: translate(18vw, 2vh) rotate(8deg) scale(.53); }
+  36% { transform: translate(37vw, 18vh) rotate(-7deg) scale(.61); }
+  45% { transform: translate(9vw, 27vh) rotate(12deg) scale(.72); }
+  54% { transform: translate(-28vw, 10vh) rotate(-10deg) scale(.88); }
+  63% { transform: translate(-8vw, -13vh) rotate(8deg) scale(1.08); }
+  72% { transform: translate(27vw, 16vh) rotate(-12deg) scale(1.34); }
+  81% { transform: translate(-19vw, -4vh) rotate(10deg) scale(1.72); }
+  91% { transform: translate(6vw, 3vh) rotate(-8deg) scale(2.45); }
+  100% { transform: translate(0, 0) rotate(4deg) scale(5.5); opacity: 0; }
+}
 /* Fill the wide-screen scene without changing the approved mobile hero. */
 @media (min-width: 1024px) {
   .collage-mountain-cutout { width: 73%; left: -5%; bottom: 32%; }
@@ -920,4 +988,13 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-contact-products { height: 160px; max-width: 260px; margin: 20px 0; }
   .sl-contact-products .sl-product-croissant { width: 160px; }
   .sl-contact-products .sl-product-skincare { width: 145px; right: 0; }
+  .collage-sign-trigger { width: 45%; }
+  .sl-lotion-drop { width: 145px; height: 225px; }
+  .sl-lotion-splash { width: 185px; height: 130px; }
+  .pull-secret-obunga { width: min(58vw, 220px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; scroll-snap-type: none; }
+  .sl-pump-head { transition: none; }
+  .pull-secret-obunga { animation: none; opacity: 0; }
 }

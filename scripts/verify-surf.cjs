@@ -41,8 +41,8 @@ async function main() {
           for (let i = 3; i < bytes.length; i += 4) if (bytes[i] > 0) painted++;
           return { frame: +c.dataset.renderedFrame, cache: +c.dataset.cachedFrames, painted, total: c.width * c.height };
         });
-        assert.ok(sample.painted > 1000, `${name}: blank surf at ${progress}`);
-        if (progress >= .65) assert.equal(sample.painted, sample.total, `${name}: uncovered edge at ${progress}`);
+        if (progress < .8) assert.ok(sample.painted > 1000, `${name}: blank surf at ${progress}`);
+        if (progress >= .9) assert.equal(sample.painted, 0, `${name}: surf should have revealed the pink section`);
         assert.ok(sample.cache <= (name === 'mobile' ? 14 : 24));
         await page.screenshot({ path: `/tmp/slocal-${name}-surf-${progress}.png` });
         const frozen = await page.locator('.surf-canvas').getAttribute('data-rendered-frame');

@@ -3,8 +3,16 @@ import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import { Hero } from '@/src/components/Hero';
 import { FulfillmentStory } from '@/src/components/FulfillmentStory';
+import { PullSecret } from '@/src/components/PullSecret';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
+  const [secretOpen, setSecretOpen] = useState(false);
+  useEffect(() => {
+    const open = () => setSecretOpen(true);
+    window.addEventListener('slocal:open-pull-secret', open);
+    return () => window.removeEventListener('slocal:open-pull-secret', open);
+  }, []);
   return (
     <>
       <Head>
@@ -56,6 +64,7 @@ export default function Home() {
         <Hero />
         <FulfillmentStory />
       </main>
+      {secretOpen && <PullSecret onReset={() => setSecretOpen(false)} />}
     </>
   );
 }

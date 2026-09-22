@@ -21,6 +21,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     let target = 0;
     let failures = 0;
     let failed = false;
+    let snapped = false;
     const variant = window.innerWidth <= 640 ? 'mobile' : 'desktop';
     const limit = variant === 'mobile' ? 14 : 24;
 
@@ -29,6 +30,9 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       setActive(false);
       scene.current?.style.removeProperty('opacity');
       scene.current?.style.removeProperty('pointer-events');
+      scene.current?.style.removeProperty('clip-path');
+      root.current?.style.removeProperty('--pink-rise');
+      (root.current?.nextElementSibling as HTMLElement | null)?.style.removeProperty('transform');
       if (canvas.current) canvas.current.style.opacity = '0';
     };
     const requestFrame = async (index: number) => {
@@ -68,9 +72,16 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const w = window.innerWidth;
       const h = scene.current.offsetHeight;
       const progress = clamp(-rect.top / Math.max(1, root.current.offsetHeight - h));
-      const fade = clamp((progress - .82) / .18);
-      scene.current.style.opacity = String(1 - clamp((progress - .52) / .08));
-      scene.current.style.pointerEvents = progress >= .6 ? 'none' : 'auto';
+      const fade = clamp((progress - .92) / .08);
+      const edgeY = h * (1.12 - progress * 1.62);
+      const pinkY = edgeY + h * .32;
+      const revealY = Math.max(0, pinkY - h * .12);
+      root.current.style.setProperty('--pink-rise', `${Math.max(0, pinkY)}px`);
+      const story = root.current.nextElementSibling as HTMLElement | null;
+      if (story) story.style.transform = `translateY(${revealY - Math.max(0, rect.bottom - h)}px)`;
+      scene.current.style.opacity = '1';
+      scene.current.style.clipPath = `inset(0 0 ${Math.max(0, h - revealY)}px 0)`;
+      scene.current.style.pointerEvents = pinkY <= 0 ? 'none' : 'auto';
       target = Math.round(clamp(progress / .82) * (manifest.count - 1));
       canvas.current.dataset.frame = String(target);
       canvas.current.dataset.progress = progress.toFixed(4);
@@ -94,8 +105,8 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       ctx.clearRect(0, 0, w, h);
       const edge = manifest.contours[available];
       const average = edge.reduce((a, b) => a + b, 0) / edge.length;
-      const edgeY = h * (1.16 - clamp(progress / .62) * 1.65);
-      const scale = Math.max(w / bitmap.width, (h - edgeY + 20) / (bitmap.height * (1 - average)), h / bitmap.height);
+      // Constant scale: move the filmed crest, never zoom or reveal the sandy full frame.
+      const scale = Math.max(w / bitmap.width, h / bitmap.height);
       const dw = bitmap.width * scale;
       const dh = bitmap.height * scale;
       const dx = (w - dw) / 2;
@@ -114,20 +125,30 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       ctx.clip();
       ctx.drawImage(bitmap, dx, dy, dw, dh);
       ctx.restore();
-      // Once the incoming surf covers the scene, settle into the full overhead shot.
-      const settle = clamp((progress - .61) / .16);
-      if (settle > 0) {
-        const cover = Math.max(w / bitmap.width, h / bitmap.height);
-        ctx.globalAlpha = settle;
-        ctx.drawImage(bitmap, (w - bitmap.width * cover) / 2, (h - bitmap.height * cover) / 2, bitmap.width * cover, bitmap.height * cover);
-        ctx.globalAlpha = 1;
-      }
+      // Reveal the actual pink section immediately behind a narrow band of surf.
+      ctx.globalCompositeOperation = 'destination-in';
+      const trailing = ctx.createLinearGradient(0, pinkY - h * .12, 0, pinkY);
+      trailing.addColorStop(0, 'rgba(0,0,0,1)');
+      trailing.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = trailing;
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = 'source-over';
+      canvas.current.dataset.scale = scale.toFixed(5);
       canvas.current.dataset.renderedFrame = String(available);
       canvas.current.dataset.cachedFrames = String(cache.size);
     };
     const schedule = () => { if (!raf && !stopped) raf = requestAnimationFrame(draw); };
+    const snapThroughWave = (event: WheelEvent) => {
+      if (!enabled || failed || reduced.matches || !root.current || event.deltaY <= 8 || snapped) return;
+      const rect = root.current.getBoundingClientRect();
+      if (Math.abs(rect.top) > 8) return;
+      event.preventDefault();
+      snapped = true;
+      window.scrollTo({ top: root.current.offsetTop + root.current.offsetHeight - window.innerHeight, behavior: 'smooth' });
+    };
     const preference = () => { if (reduced.matches) disable(); };
     window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('wheel', snapThroughWave, { passive: false });
     window.addEventListener('resize', schedule);
     reduced.addEventListener('change', preference);
     if (!reduced.matches) {
@@ -142,6 +163,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       cancelAnimationFrame(raf);
       cache.forEach(bitmap => bitmap.close());
       window.removeEventListener('scroll', schedule);
+      window.removeEventListener('wheel', snapThroughWave);
       window.removeEventListener('resize', schedule);
       reduced.removeEventListener('change', preference);
     };
