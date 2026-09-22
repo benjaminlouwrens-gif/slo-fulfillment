@@ -3,12 +3,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Heart } from 'lucide-react';
+import { SurfTransition } from './SurfTransition';
 
 const cutoutPath = '/assets/collage/approved-cutouts';
 
 export const Hero: React.FC = () => {
   return (
-    <section
+    <SurfTransition><section
       className="collage-hero"
       aria-label="Southern LoCal Fulfillment introduction"
     >
@@ -16,7 +17,7 @@ export const Hero: React.FC = () => {
       <div className="collage-pastel-sun" aria-hidden="true" />
       <img className="collage-beach-horizon" src={`${cutoutPath}/beach-horizon-cutout.png`} alt="" aria-hidden="true" />
       <img className="collage-mountain-cutout collage-scene-piece" src="/assets/collage/cutouts/mountain-cutout.png" alt="" />
-      <img className="collage-warehouse-cutout collage-scene-piece" src={`${cutoutPath}/warehouse-building-reference.png`} alt="" />
+      <picture><source media="(min-width: 641px)" srcSet={`${cutoutPath}/warehouse-no-text-desktop.png`} /><img className="collage-warehouse-cutout collage-scene-piece" src={`${cutoutPath}/warehouse-building-reference.png`} alt="" /></picture>
 
       <img className="collage-palm-cutout collage-palm-cutout--left collage-persistent-left" src={`${cutoutPath}/reference-palms-left.png`} alt="" />
       <img className="collage-palm-cutout collage-palm-cutout--right collage-persistent-right" src={`${cutoutPath}/reference-palms-left.png`} alt="" />
@@ -44,10 +45,10 @@ export const Hero: React.FC = () => {
       <img className="collage-torn-cream" src={`${cutoutPath}/torn-paper-01.png`} alt="" aria-hidden="true" />
       <img className="collage-torn-foreground" src={`${cutoutPath}/torn-paper-foreground.png`} alt="" aria-hidden="true" />
       <img className="collage-tape" src={`${cutoutPath}/reference-tape.png`} alt="" aria-hidden="true" />
-      <img className="collage-reference-note" src={`${cutoutPath}/reference-left-note.png`} alt="" aria-hidden="true" />
+      <picture><source media="(min-width: 641px)" srcSet={`${cutoutPath}/note-no-text-desktop.png`} /><img className="collage-reference-note" src={`${cutoutPath}/reference-left-note.png`} alt="" aria-hidden="true" /></picture>
       <div className="collage-paper-note collage-paper-note--left" aria-hidden="true">GOOD<br />BRANDS<br />GO FAR <Heart size={14} fill="currentColor" /></div>
       <div className="collage-paper-note collage-paper-note--right" aria-hidden="true">FROM<br />SOCAL<br />TO<br />EVERYWHERE</div>
 
-    </section>
+    </section></SurfTransition>
   );
 };
