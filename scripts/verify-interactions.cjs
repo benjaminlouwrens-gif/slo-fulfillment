@@ -21,10 +21,12 @@ const assert = require('node:assert/strict');
       const completionVisuals = await page.evaluate(() => ({
         canvasOpacity: getComputedStyle(document.querySelector('.surf-canvas')).opacity,
         sceneOpacity: getComputedStyle(document.querySelector('.surf-scene')).opacity,
+        underlayOpacity: getComputedStyle(document.querySelector('.surf-pink-underlay')).opacity,
         storyTransform: document.querySelector('.sl-story').style.transform,
       }));
       assert.equal(completionVisuals.canvasOpacity, '0', 'wave canvas remained visible after completion');
       assert.equal(completionVisuals.sceneOpacity, '0', 'hero scene remained visible after completion');
+      assert.equal(completionVisuals.underlayOpacity, '0', 'pink underlay covered the real story after completion');
       assert.equal(completionVisuals.storyTransform, '', 'pink content retained an inline transition transform after completion');
       await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
       await page.waitForTimeout(250);

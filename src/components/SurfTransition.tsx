@@ -8,6 +8,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
   const root = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const scene = useRef<HTMLDivElement>(null);
+  const pinkUnderlay = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       scene.current?.style.removeProperty('opacity');
       scene.current?.style.removeProperty('pointer-events');
       scene.current?.style.removeProperty('clip-path');
-      root.current?.style.removeProperty('--pink-rise');
+      pinkUnderlay.current?.style.setProperty('opacity', '0');
       (root.current?.nextElementSibling as HTMLElement | null)?.style.removeProperty('transform');
       if (canvas.current) canvas.current.style.opacity = '0';
     };
@@ -48,7 +49,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       scene.current.style.pointerEvents = 'none';
       scene.current.style.clipPath = 'inset(100% 0 0 0)';
       canvas.current.style.opacity = '0';
-      root.current.style.setProperty('--pink-rise', '0px');
+      pinkUnderlay.current?.style.setProperty('opacity', '0');
       (root.current.nextElementSibling as HTMLElement | null)?.style.removeProperty('transform');
     };
     const reclaimScene = () => {
@@ -105,12 +106,16 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const edgeY = h * (1.12 - progress * 1.62);
       const pinkY = edgeY + h * .32;
       const revealY = Math.max(0, pinkY - h * .12);
-      root.current.style.setProperty('--pink-rise', `${Math.max(0, pinkY)}px`);
-      const story = root.current.nextElementSibling as HTMLElement | null;
-      if (story) story.style.transform = `translateY(${revealY - Math.max(0, rect.bottom - h)}px)`;
       scene.current.style.opacity = '1';
       scene.current.style.clipPath = `inset(0 0 ${Math.max(0, h - revealY)}px 0)`;
       scene.current.style.pointerEvents = pinkY <= 0 ? 'none' : 'auto';
+      if (pinkUnderlay.current) {
+        const story = root.current.nextElementSibling as HTMLElement | null;
+        const storyTop = story ? story.getBoundingClientRect().top : h;
+        const underlayHeight = Math.max(0, Math.min(h, storyTop));
+        pinkUnderlay.current.style.opacity = '1';
+        pinkUnderlay.current.style.clipPath = `inset(0 0 ${h - underlayHeight}px 0)`;
+      }
       target = Math.round(clamp(progress / .82) * (manifest.count - 1));
       canvas.current.dataset.frame = String(target);
       canvas.current.dataset.progress = progress.toFixed(4);
@@ -289,6 +294,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
 
   return <div ref={root} className={`surf-transition${active ? ' surf-transition--active' : ''}`}>
     <div className="surf-stage">
+      <div ref={pinkUnderlay} className="surf-pink-underlay" aria-hidden="true" />
       <div ref={scene} className="surf-scene">{children}</div>
       <canvas ref={canvas} className="surf-canvas" aria-hidden="true" />
     </div>

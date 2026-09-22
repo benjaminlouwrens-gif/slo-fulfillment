@@ -39,8 +39,15 @@ async function main() {
           const bytes = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
           let painted = 0;
           for (let i = 3; i < bytes.length; i += 4) if (bytes[i] > 0) painted++;
-          return { frame: +c.dataset.renderedFrame, cache: +c.dataset.cachedFrames, painted, total: c.width * c.height };
+          return {
+            frame: +c.dataset.renderedFrame,
+            cache: +c.dataset.cachedFrames,
+            painted,
+            total: c.width * c.height,
+            storyTransform: document.querySelector('.sl-story').style.transform,
+          };
         });
+        assert.equal(sample.storyTransform, '', `${name}: surf renderer moved the full story at ${progress}`);
         if (progress < .8) assert.ok(sample.painted > 1000, `${name}: blank surf at ${progress}`);
         if (progress >= .9) assert.equal(sample.painted, 0, `${name}: surf should have revealed the pink section`);
         assert.ok(sample.cache <= (name === 'mobile' ? 14 : 24));
