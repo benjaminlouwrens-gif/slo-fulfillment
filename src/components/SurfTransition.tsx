@@ -42,6 +42,20 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       (root.current?.nextElementSibling as HTMLElement | null)?.style.removeProperty('transform');
       if (canvas.current) canvas.current.style.opacity = '0';
     };
+    const releaseToStory = () => {
+      if (!root.current || !scene.current || !canvas.current) return;
+      scene.current.style.opacity = '0';
+      scene.current.style.pointerEvents = 'none';
+      scene.current.style.clipPath = 'inset(100% 0 0 0)';
+      canvas.current.style.opacity = '0';
+      root.current.style.setProperty('--pink-rise', '0px');
+      (root.current.nextElementSibling as HTMLElement | null)?.style.removeProperty('transform');
+    };
+    const reclaimScene = () => {
+      scene.current?.style.setProperty('opacity', '1');
+      scene.current?.style.setProperty('pointer-events', 'auto');
+      scene.current?.style.setProperty('clip-path', 'inset(0 0 0 0)');
+    };
     const requestFrame = async (index: number) => {
       if (stopped || failed || pending.size >= 5 || index < 0 || index >= manifest.count || cache.has(index) || pending.has(index)) return;
       pending.add(index);
@@ -79,6 +93,10 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     const draw = () => {
       raf = 0;
       if (!enabled || !root.current || !canvas.current || !scene.current) return;
+      if (sceneState === 'waveComplete') {
+        releaseToStory();
+        return;
+      }
       const rect = root.current.getBoundingClientRect();
       const w = window.innerWidth;
       const h = scene.current.offsetHeight;
@@ -166,6 +184,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const destination = direction === 'forward' ? bounds.destination : bounds.top;
       if (direction === 'forward' ? from >= destination - 1 : from <= destination + 1) return false;
       sceneState = direction === 'forward' ? 'snapEnteringWave' : 'reverseWave';
+      reclaimScene();
       lockScroll = true;
       root.current.dataset.transition = 'running';
       const startedAt = performance.now();
@@ -184,6 +203,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         lockScroll = false;
         sceneState = direction === 'forward' ? 'waveComplete' : 'beforeWave';
         root.current?.setAttribute('data-transition', sceneState === 'waveComplete' ? 'complete' : 'idle');
+        if (sceneState === 'waveComplete') releaseToStory();
         schedule();
       };
       animationRaf = requestAnimationFrame(advance);
@@ -228,6 +248,12 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     };
     const onStartRequest = () => requestStart('forward');
     const onScroll = () => {
+      const bounds = getBounds();
+      if (!lockScroll && sceneState === 'waveComplete' && bounds && window.scrollY <= bounds.top + 1) {
+        sceneState = 'beforeWave';
+        root.current?.setAttribute('data-transition', 'idle');
+        reclaimScene();
+      }
       schedule();
     };
     const preference = () => { if (reduced.matches) disable(); };

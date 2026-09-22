@@ -18,6 +18,14 @@ const assert = require('node:assert/strict');
       await page.mouse.wheel(0, 160);
       await page.waitForTimeout(120);
       assert.ok((await page.evaluate(() => window.scrollY)) > completeY, 'downward scroll remained captured after wave completion');
+      const completionVisuals = await page.evaluate(() => ({
+        canvasOpacity: getComputedStyle(document.querySelector('.surf-canvas')).opacity,
+        sceneOpacity: getComputedStyle(document.querySelector('.surf-scene')).opacity,
+        storyTransform: document.querySelector('.sl-story').style.transform,
+      }));
+      assert.equal(completionVisuals.canvasOpacity, '0', 'wave canvas remained visible after completion');
+      assert.equal(completionVisuals.sceneOpacity, '0', 'hero scene remained visible after completion');
+      assert.equal(completionVisuals.storyTransform, '', 'pink content retained an inline transition transform after completion');
       await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
       await page.waitForTimeout(250);
       await page.mouse.wheel(0, -160);
