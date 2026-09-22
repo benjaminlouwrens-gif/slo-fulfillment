@@ -17,3 +17,9 @@
 - The source page identifies this as a 406x508 transparent PNG template uploaded by an Imgflip user.
 - Local file: `obunga-transparent.png`
 - This is a meme-template source, not an original commissioned asset. Review its rights before using the secret page in a paid campaign or other commercial distribution.
+
+## Secret loader and warehouse scene
+
+- Local loader image: `sorry-bro-loader.png`, supplied by the site owner at `/Users/benyaminlouwrens/Documents/Screenshot 2026-09-21 at 10.17.59 PM.png`.
+- Local warehouse image: `warehouse-background.jpg`, supplied by the site owner at `/Users/benyaminlouwrens/Documents/Screenshot 2026-09-21 at 10.20.03 PM.png`.
+- Local approach audio: `eerie-warehouse-drone.mp3`, synthesized locally with FFmpeg from original sine tones and brown noise on 2026-09-21; no external recording or license required.

@@ -10,6 +10,19 @@ const assert = require('node:assert/strict');
       page.on('pageerror', error => errors.push(error.message));
       await page.goto(process.env.PREVIEW_URL || 'http://127.0.0.1:8788');
       await page.waitForSelector('.surf-transition--active');
+      if (name === 'desktop') {
+        await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'auto' }));
+        await page.mouse.wheel(0, 1);
+        await page.waitForTimeout(1600);
+        assert.equal(await page.locator('.surf-transition').getAttribute('data-transition'), 'complete');
+        await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'auto' }));
+        await page.waitForTimeout(250);
+        const beforeUp = Number(await page.locator('.surf-canvas').getAttribute('data-rendered-frame'));
+        await page.mouse.wheel(0, -160);
+        await page.waitForTimeout(180);
+        assert.ok((await page.evaluate(() => window.scrollY)) < 1200, 'upward wave scroll did not remain manual');
+        assert.ok(Number(await page.locator('.surf-canvas').getAttribute('data-rendered-frame')) < beforeUp, 'upward wave scroll did not reverse the frame');
+      }
       const bounds = await page.evaluate(() => {
         const top = (element) => {
           let value = 0;
@@ -42,16 +55,24 @@ const assert = require('node:assert/strict');
         await page.waitForTimeout(700);
         await page.locator('.sl-local-sign-trigger').evaluate(element => element.click());
         await page.waitForSelector('.pull-secret-countdown');
-        assert.equal(await page.locator('.pull-secret-countdown strong').textContent(), '5');
+        assert.equal(await page.locator('.pull-secret-countdown strong').textContent(), '00:05');
+        assert.match(await page.locator('.pull-secret-loader-image').getAttribute('src'), /sorry-bro-loader\.png$/);
         await page.waitForTimeout(5200);
         await page.waitForSelector('.pull-secret-obunga');
-        await page.waitForTimeout(5200);
+        assert.match(await page.locator('.pull-secret').evaluate(element => getComputedStyle(element).backgroundImage), /warehouse-background\.jpg/);
+        assert.equal(await page.locator('audio[src*="construction"]').evaluate(element => element.paused), true);
+        assert.equal(await page.locator('audio[src*="eerie"]').evaluate(element => element.paused), false);
+        assert.equal(await page.locator('.pull-secret-obunga').evaluate(element => getComputedStyle(element).opacity), '1');
+        const firstObungaTransform = await page.locator('.pull-secret-obunga').evaluate(element => getComputedStyle(element).transform);
+        await page.waitForTimeout(800);
+        assert.notEqual(await page.locator('.pull-secret-obunga').evaluate(element => getComputedStyle(element).transform), firstObungaTransform, 'Obunga did not continuously move');
+        await page.waitForTimeout(4400);
         assert.equal(await page.locator('.pull-secret').count(), 0, 'secret page did not reset to the hero');
       }
       await page.emulateMedia({ reducedMotion: 'reduce' });
       assert.equal(await page.locator('.sl-product-duet .sl-product-croissant').evaluate(element => getComputedStyle(element).animationName), 'none');
       assert.deepEqual(errors, []);
-      console.log(name, 'snap pump phases, hover shake, secret reset, reduced motion PASS');
+      console.log(name, 'wave direction, pump phases, hover shake, secret reset, reduced motion PASS');
       await page.close();
     }
   } finally {

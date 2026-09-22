@@ -886,26 +886,26 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-lotion-drop { opacity: 0; }
 .sl-lotion-splash { width: 240px; height: 165px; opacity: 0; transform-origin: 50% 50%; }
 .pull-secret { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: #f7f5ef; color: #101010; }
-.pull-secret--approach { background: #e8e7df; }
+.pull-secret--approach { background: #161914 url('/assets/easter-egg/warehouse-background.jpg') center / cover no-repeat; color: #f7f5ef; }
+.pull-secret--approach::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,16,13,.66), rgba(10,16,13,.12) 48%, rgba(10,16,13,.42)); pointer-events: none; }
+.pull-secret-countdown-scene { position: relative; width: min(92vw, 1065px); }
+.pull-secret-loader-image { display: block; width: 100%; height: auto; box-shadow: 0 28px 80px rgba(0,0,0,.24); }
 .pull-secret--black { background: #000; }
-.pull-secret-countdown { display: grid; justify-items: center; gap: 10px; font-family: Arial, Helvetica, sans-serif; text-align: center; }
-.pull-secret-countdown p { max-width: 15ch; margin: 0; font-size: clamp(28px, 5vw, 64px); font-weight: 900; line-height: .95; }
-.pull-secret-countdown strong { font-size: clamp(90px, 20vw, 240px); line-height: .75; font-weight: 900; }
-.pull-secret-countdown span { font-size: 13px; text-transform: uppercase; letter-spacing: .18em; }
-.pull-secret-obunga { width: min(27vw, 250px); max-height: 66vh; object-fit: contain; animation: obunga-approach 4.1s steps(1, end) forwards; will-change: transform; }
+.pull-secret-countdown { position: absolute; right: 4.5%; bottom: 4.5%; display: grid; justify-items: end; gap: 2px; padding: 8px 14px 10px; background: rgba(255,255,255,.9); color: #101010; font-family: Arial, Helvetica, sans-serif; text-align: right; }
+.pull-secret-countdown p { margin: 0; font-size: clamp(12px, 1.7vw, 22px); font-weight: 400; line-height: 1; }
+.pull-secret-countdown strong { font-size: clamp(34px, 6vw, 78px); line-height: .9; font-weight: 900; letter-spacing: -.04em; }
+.pull-secret-warehouse-scene { position: relative; width: 100%; height: 100%; isolation: isolate; }
+.pull-secret-warehouse-copy { position: absolute; z-index: 1; top: 6vh; left: 5vw; max-width: 13ch; font-family: Arial, Helvetica, sans-serif; font-size: clamp(18px, 2.5vw, 38px); font-weight: 900; line-height: .95; text-shadow: 0 3px 18px rgba(0,0,0,.35); }
+.pull-secret-obunga { position: absolute; z-index: 2; top: 50%; left: 50%; width: min(33vw, 310px); height: auto; max-height: none; object-fit: contain; animation: obunga-approach 4.15s linear forwards; transform-origin: center center; will-change: transform; filter: drop-shadow(10px 18px 8px rgba(0,0,0,.3)); }
 @keyframes obunga-approach {
-  0% { transform: translate(-44vw, 16vh) rotate(-9deg) scale(.32); }
-  9% { transform: translate(-25vw, 8vh) rotate(7deg) scale(.38); }
-  18% { transform: translate(-7vw, 20vh) rotate(-12deg) scale(.43); }
-  27% { transform: translate(18vw, 2vh) rotate(8deg) scale(.53); }
-  36% { transform: translate(37vw, 18vh) rotate(-7deg) scale(.61); }
-  45% { transform: translate(9vw, 27vh) rotate(12deg) scale(.72); }
-  54% { transform: translate(-28vw, 10vh) rotate(-10deg) scale(.88); }
-  63% { transform: translate(-8vw, -13vh) rotate(8deg) scale(1.08); }
-  72% { transform: translate(27vw, 16vh) rotate(-12deg) scale(1.34); }
-  81% { transform: translate(-19vw, -4vh) rotate(10deg) scale(1.72); }
-  91% { transform: translate(6vw, 3vh) rotate(-8deg) scale(2.45); }
-  100% { transform: translate(0, 0) rotate(4deg) scale(5.5); opacity: 0; }
+  0% { transform: translate(-52vw, 10vh) rotate(-7deg) scale(.28); }
+  15% { transform: translate(39vw, -9vh) rotate(8deg) scale(.52); }
+  30% { transform: translate(-43vw, 15vh) rotate(-10deg) scale(.78); }
+  45% { transform: translate(36vw, -8vh) rotate(7deg) scale(1.08); }
+  60% { transform: translate(-31vw, 10vh) rotate(-9deg) scale(1.48); }
+  75% { transform: translate(29vw, -5vh) rotate(8deg) scale(2.02); }
+  88% { transform: translate(-17vw, 5vh) rotate(-6deg) scale(2.8); }
+  100% { transform: translate(-50%, -50%) rotate(5deg) scale(5.6); }
 }
 /* Fill the wide-screen scene without changing the approved mobile hero. */
 @media (min-width: 1024px) {
@@ -989,6 +989,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-contact-products .sl-product-skincare { width: 145px; right: 0; }
   .sl-lotion-drop { width: 145px; height: 225px; }
   .sl-lotion-splash { width: 185px; height: 130px; }
+  .pull-secret-countdown-scene { width: 100vw; }
+  .pull-secret-loader-image { min-height: 100vh; width: 100%; object-fit: cover; object-position: center; }
+  .pull-secret-countdown { right: 5vw; bottom: 8vh; }
+  .pull-secret-warehouse-copy { top: 8vh; left: 7vw; max-width: 10ch; }
   .pull-secret-obunga { width: min(58vw, 220px); }
 }
 @media (prefers-reduced-motion: reduce) {

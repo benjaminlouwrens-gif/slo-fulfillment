@@ -148,29 +148,35 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       canvas.current.dataset.cachedFrames = String(cache.size);
     };
     const schedule = () => { if (!raf && !stopped) raf = requestAnimationFrame(draw); };
+    const getBounds = () => {
+      if (!root.current) return null;
+      const rect = root.current.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const destination = Math.max(top, top + root.current.offsetHeight - window.innerHeight);
+      return { top, destination };
+    };
     const beginTransition = () => {
       if (!enabled || failed || reduced.matches || transitionStarted || !root.current) return;
-      const rect = root.current.getBoundingClientRect();
-      if (Math.abs(rect.top) > 14) return;
+      const bounds = getBounds();
+      if (!bounds) return;
+      const from = Math.max(bounds.top, Math.min(window.scrollY, bounds.destination));
+      if (from >= bounds.destination - 1) return;
       transitionStarted = true;
       lockScroll = true;
       root.current.dataset.transition = 'running';
-      const from = window.scrollY;
-      const rootTop = rect.top + from;
-      const destination = Math.max(from, rootTop + root.current.offsetHeight - window.innerHeight);
       const startedAt = performance.now();
       const duration = 1350;
       const advance = (now: number) => {
         if (stopped) return;
         const progress = clamp((now - startedAt) / duration);
         const eased = 1 - Math.pow(1 - progress, 3);
-        window.scrollTo(0, from + (destination - from) * eased);
+        window.scrollTo(0, from + (bounds.destination - from) * eased);
         schedule();
         if (progress < 1) {
           animationRaf = requestAnimationFrame(advance);
           return;
         }
-        window.scrollTo(0, destination);
+        window.scrollTo(0, bounds.destination);
         lockScroll = false;
         root.current?.setAttribute('data-transition', 'complete');
         schedule();
@@ -190,10 +196,11 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         event.preventDefault();
         return;
       }
-      if (!enabled || transitionStarted || event.deltaY <= 0) return;
-      const rect = root.current.getBoundingClientRect();
-      if (Math.abs(rect.top) > 14) return;
+      if (!enabled || event.deltaY <= 0) return;
+      const bounds = getBounds();
+      if (!bounds || window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1) return;
       event.preventDefault();
+      transitionStarted = false;
       requestStart();
     };
     const snapTouchStart = (event: TouchEvent) => { touchStartY = event.touches[0]?.clientY ?? 0; };
@@ -204,9 +211,11 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         event.preventDefault();
         return;
       }
-      if (!enabled || transitionStarted || touchStartY - currentY <= 10) return;
-      if (Math.abs(root.current.getBoundingClientRect().top) > 14) return;
+      if (!enabled || touchStartY - currentY <= 10) return;
+      const bounds = getBounds();
+      if (!bounds || window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1) return;
       event.preventDefault();
+      transitionStarted = false;
       requestStart();
     };
     const onStartRequest = () => requestStart();
