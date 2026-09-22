@@ -33,9 +33,9 @@ export const Hero: React.FC = () => {
         <p className="collage-kicker">Southern California brands belong here</p>
         <h1><span>SloCal</span><strong>Fulfillment</strong></h1>
         <button type="button" className="collage-road-cta" onClick={() => window.dispatchEvent(new Event('slocal:start-surf'))}>
-          <span>SWIPE UP TO SEE IF WE CAN</span>
+          <span className="collage-road-cta__eyebrow">SWIPE UP TO SEE IF WE CAN</span>
           <strong>WAREHOUSE, PACK &amp; SHIP</strong>
-          <span>YOUR PRODUCTS <ArrowDown size={16} /></span>
+          <span className="collage-road-cta__footer">YOUR PRODUCTS <ArrowDown aria-hidden="true" strokeWidth={4} /></span>
         </button>
       </motion.div>
 
