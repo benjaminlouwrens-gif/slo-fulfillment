@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 type Manifest = { count: number; width: number; height: number; contours: number[][] };
+type SceneState = 'beforeWave' | 'snapEnteringWave' | 'waveComplete' | 'reverseWave';
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
 export function SurfTransition({ children }: { children: React.ReactNode }) {
@@ -21,17 +22,17 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     let target = 0;
     let failures = 0;
     let failed = false;
-    let transitionStarted = false;
+    let sceneState: SceneState = 'beforeWave';
     let queuedStart = false;
     let lockScroll = false;
     let animationRaf = 0;
-    let lastScrollY = window.scrollY;
     const variant = window.innerWidth <= 640 ? 'mobile' : 'desktop';
     const limit = variant === 'mobile' ? 14 : 24;
 
     const disable = () => {
       enabled = false;
       lockScroll = false;
+      sceneState = 'beforeWave';
       cancelAnimationFrame(animationRaf);
       setActive(false);
       scene.current?.style.removeProperty('opacity');
@@ -156,13 +157,15 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       return { top, destination };
     };
     const beginTransition = (direction: 'forward' | 'backward') => {
-      if (!enabled || failed || reduced.matches || transitionStarted || !root.current) return false;
+      if (!enabled || failed || reduced.matches || lockScroll || !root.current) return false;
       const bounds = getBounds();
       if (!bounds) return false;
+      if (direction === 'forward' && sceneState !== 'beforeWave') return false;
+      if (direction === 'backward' && sceneState !== 'waveComplete') return false;
       const from = Math.max(bounds.top, Math.min(window.scrollY, bounds.destination));
       const destination = direction === 'forward' ? bounds.destination : bounds.top;
       if (direction === 'forward' ? from >= destination - 1 : from <= destination + 1) return false;
-      transitionStarted = true;
+      sceneState = direction === 'forward' ? 'snapEnteringWave' : 'reverseWave';
       lockScroll = true;
       root.current.dataset.transition = 'running';
       const startedAt = performance.now();
@@ -179,8 +182,8 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         }
         window.scrollTo(0, destination);
         lockScroll = false;
-        transitionStarted = direction === 'forward';
-        root.current?.setAttribute('data-transition', direction === 'forward' ? 'complete' : 'idle');
+        sceneState = direction === 'forward' ? 'waveComplete' : 'beforeWave';
+        root.current?.setAttribute('data-transition', sceneState === 'waveComplete' ? 'complete' : 'idle');
         schedule();
       };
       animationRaf = requestAnimationFrame(advance);
@@ -203,9 +206,8 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const bounds = getBounds();
       if (!bounds) return;
       const direction = event.deltaY > 0 ? 'forward' : 'backward';
-      if (direction === 'forward' && (window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1)) return;
-      if (direction === 'backward' && (window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
-      transitionStarted = false;
+      if (direction === 'forward' && (sceneState !== 'beforeWave' || window.scrollY < bounds.top - 14 || window.scrollY > bounds.top + 14)) return;
+      if (direction === 'backward' && (sceneState !== 'waveComplete' || window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
       if (requestStart(direction)) event.preventDefault();
     };
     const snapTouchStart = (event: TouchEvent) => { touchStartY = event.touches[0]?.clientY ?? 0; };
@@ -220,18 +222,12 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const bounds = getBounds();
       if (!bounds) return;
       const direction = touchStartY - currentY > 0 ? 'forward' : 'backward';
-      if (direction === 'forward' && (window.scrollY < bounds.top - 14 || window.scrollY >= bounds.destination - 1)) return;
-      if (direction === 'backward' && (window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
-      transitionStarted = false;
+      if (direction === 'forward' && (sceneState !== 'beforeWave' || window.scrollY < bounds.top - 14 || window.scrollY > bounds.top + 14)) return;
+      if (direction === 'backward' && (sceneState !== 'waveComplete' || window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
       if (requestStart(direction)) event.preventDefault();
     };
     const onStartRequest = () => requestStart('forward');
     const onScroll = () => {
-      if (!lockScroll && transitionStarted && root.current && window.scrollY < lastScrollY && window.scrollY <= root.current.offsetTop + 8) {
-        transitionStarted = false;
-        root.current.dataset.transition = 'idle';
-      }
-      lastScrollY = window.scrollY;
       schedule();
     };
     const preference = () => { if (reduced.matches) disable(); };
