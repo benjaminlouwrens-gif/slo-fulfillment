@@ -16,7 +16,7 @@ const SERVICE_AREAS = [
 const QUICK_LINKS: [string, string][] = [
   ['How It Works', '#how-it-works'],
   ['Industries', '#industries'],
-  ['Case Studies', '#case-studies'],
+  ['Examples', '#case-studies'],
   ['FAQ', '#faq'],
   ['Get Free Consultation', '#contact'],
 ];

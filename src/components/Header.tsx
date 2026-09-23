@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react';
 const NAV_LINKS: [string, string][] = [
   ['How It Works', '#how-it-works'],
   ['Industries', '#industries'],
-  ['Case Studies', '#case-studies'],
+  ['Examples', '#case-studies'],
   ['FAQ', '#faq'],
 ];
 
