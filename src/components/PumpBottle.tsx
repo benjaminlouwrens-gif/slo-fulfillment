@@ -39,21 +39,34 @@ export function PumpBottle() {
 
       if (!nozzle.current || !drop.current || !splash.current) return;
 
-      const from = nozzle.current.getBoundingClientRect();
       const to = target.getBoundingClientRect();
+      let from = nozzle.current.getBoundingClientRect();
+      const targetX = to.left + to.width / 2;
+      const correction = targetX - (from.left + from.width / 2);
+      if (Math.abs(correction) > .5) {
+        const alignedX = Number(bottle.current.dataset.alignX || 0) + correction;
+        bottle.current.dataset.alignX = String(alignedX);
+        bottle.current.style.setProperty('--pump-align-x', `${alignedX}px`);
+        from = nozzle.current.getBoundingClientRect();
+      }
       const falling = clamp((progress - .18) / .54);
-      const x = from.left + (to.left + to.width / 2 - from.left) * falling;
-      const landingY = to.top - drop.current.offsetHeight + 5;
-      const y = from.top + (landingY - from.top) * falling;
+      const dropWidth = drop.current.offsetWidth;
+      const impactScale = Math.min(.3, to.width * .88 / dropWidth);
       const forming = clamp(progress / .18);
-      const visible = !reduced.matches && progress > .015 && progress < .72;
+      const scale = progress < .18
+        ? .35 + forming * .65
+        : 1 - (1 - impactScale) * clamp((falling - .84) / .16);
+      const x = from.left + from.width / 2 - dropWidth / 2;
+      const landingY = to.top - to.height * .24;
+      const y = from.bottom + (landingY - from.bottom) * falling;
+      const visible = !reduced.matches && progress > .015 && progress < .78;
       drop.current.style.opacity = visible ? '1' : '0';
-      drop.current.style.transform = `translate(${x}px, ${y}px) scale(${progress < .18 ? .35 + forming * .65 : 1})`;
-      drop.current.dataset.phase = progress < .015 ? 'idle' : progress < .18 ? 'forming' : progress < .72 ? 'falling' : progress < .9 ? 'impact' : 'gone';
+      drop.current.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+      drop.current.dataset.phase = progress < .015 ? 'idle' : progress < .18 ? 'forming' : progress < .72 ? 'falling' : progress < .78 ? 'impact' : 'gone';
 
-      const pop = clamp((progress - .72) / .18);
-      splash.current.style.opacity = !reduced.matches && progress >= .72 && progress < .9 ? String(1 - pop * .85) : '0';
-      const splashScale = 1.1 - pop * .55;
+      const pop = clamp((progress - .78) / .12);
+      splash.current.style.opacity = !reduced.matches && progress >= .78 && progress < .9 ? String(1 - pop) : '0';
+      const splashScale = 1;
       const splashX = to.left + to.width / 2 - (splash.current.offsetWidth * splashScale) / 2;
       const splashY = to.top + to.height * .52 - (splash.current.offsetHeight * splashScale) / 2;
       splash.current.style.transform = `translate(${splashX}px, ${splashY}px) scale(${splashScale})`;
@@ -79,7 +92,10 @@ export function PumpBottle() {
       <span className="sl-pump-body" />
     </span>
     {mounted && createPortal(<div className="sl-lotion-overlay" aria-hidden="true">
-      <div ref={drop} className="sl-lotion-drop"><svg viewBox="0 0 190 290"><path d="M96 10C68 28 43 52 34 81C25 110 35 136 61 144C87 152 115 137 121 108C126 83 108 66 88 53C72 42 74 25 96 10Z" /></svg></div>
+      <div ref={drop} className="sl-lotion-drop"><svg viewBox="0 0 190 290">
+        <path className="sl-drop-falling" d="M113 10C78 38 44 77 35 127C29 158 45 190 43 218C41 257 61 279 96 278C135 276 154 256 153 216C152 177 141 107 117 70C103 48 101 29 113 10Z" />
+        <path className="sl-drop-impact" d="M37 86C39 64 52 62 64 67C75 47 91 47 106 62C118 52 137 60 143 72C160 73 166 85 156 97C146 111 127 103 114 110C97 120 84 105 67 110C45 115 29 101 37 86Z" />
+      </svg></div>
       <div ref={splash} className="sl-lotion-splash"><svg viewBox="0 0 220 160"><path className="lotion-pop-line" d="M30 72L7 55M42 113L21 137M83 126L75 154M139 125L148 153M179 105L210 121M181 69L213 56" /></svg></div>
     </div>, document.body)}
   </>;

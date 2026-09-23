@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronDown, Phone, Mail } from 'lucide-react';
+import { ChevronDown, Mail } from 'lucide-react';
 
 const FAQS: { question: string; answer: string }[] = [
   {
@@ -112,14 +112,9 @@ export const FAQ: React.FC = () => {
           transition={{ duration: 0.8 }}
         >
           <p className="text-accent-slate mb-3">
-            Still have questions? Reach out directly and we&rsquo;ll get back to you within
-            one business day.
+            Have a specific requirement? Use the consultation form or send us an email.
           </p>
           <div className="flex justify-center gap-6 text-sm font-medium">
-            <a href="tel:5302155987" className="flex items-center gap-2 text-primary-700">
-              <Phone size={16} />
-              (530) 215-5987
-            </a>
             <a href="mailto:louwrensventures@gmail.com" className="flex items-center gap-2 text-primary-700">
               <Mail size={16} />
               louwrensventures@gmail.com

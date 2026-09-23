@@ -72,7 +72,7 @@ async function main() {
       assert.ok(Math.abs(await page.locator('#how-it-works').evaluate(e => e.getBoundingClientRect().top) - 80) < 2);
       await page.locator('.sl-local').scrollIntoViewIfNeeded();
       await page.screenshot({ path: `/tmp/slocal-local-${name}.png` });
-      const offscreen = await page.locator('.sl-intro .sl-product-fruit').evaluate(e => getComputedStyle(e).animationPlayState);
+      const offscreen = await page.locator('.sl-intro .sl-product-fruit').first().evaluate(e => getComputedStyle(e).animationPlayState);
       assert.equal(offscreen, 'paused');
       await page.setViewportSize({ width: width - 30, height: height - 30 });
       await page.evaluate(() => window.scrollTo({ top: 650, behavior: 'instant' }));

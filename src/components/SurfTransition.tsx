@@ -193,18 +193,18 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       lockScroll = true;
       root.current.dataset.transition = 'running';
       const startedAt = performance.now();
-      const duration = 1800;
+      const duration = 1150;
       const advance = (now: number) => {
         if (stopped) return;
         const progress = clamp((now - startedAt) / duration);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        window.scrollTo(0, from + (destination - from) * eased);
+        const eased = 1 - Math.pow(1 - progress, 2);
+        window.scrollTo({ top: from + (destination - from) * eased, behavior: 'auto' });
         schedule();
         if (progress < 1) {
           animationRaf = requestAnimationFrame(advance);
           return;
         }
-        window.scrollTo(0, destination);
+        window.scrollTo({ top: destination, behavior: 'auto' });
         lockScroll = false;
         sceneState = direction === 'forward' ? 'waveComplete' : 'beforeWave';
         root.current?.setAttribute('data-transition', sceneState === 'waveComplete' ? 'complete' : 'idle');

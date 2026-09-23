@@ -367,7 +367,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 }
 .surf-transition { position: relative; }
 .surf-stage { position: relative; }
-.surf-pink-underlay { position: absolute; inset: 0; background: #f4bbcd; pointer-events: none; }
+.surf-pink-underlay { position: absolute; inset: 0; background: #efbdd0; pointer-events: none; }
+@media (min-width: 651px) {
+  .surf-pink-underlay { background: #fffdf7; }
+}
 .surf-scene { position: relative; }
 .surf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
 .surf-transition--active { height: 300svh; pointer-events: none; }
@@ -787,10 +790,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-service-layout { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 70px; }
 .sl-forklift img { width: 100%; max-height: 480px; object-fit: contain; transform: rotate(-6deg); }
 .sl-forklift span { display: block; text-align: center; font-size: 14px; margin-top: 25px; }
-.sl-services-list article { padding: 28px 0; border-top: 1px solid #183c3655; }
-.sl-services-list h3 { margin: 10px 0 14px; }
-.sl-services-list p { font-size: 15px; }
-.sl-services-list .sl-label { font-size: 12px; }
+.sl-services-list { display: grid; gap: 14px; }
+.sl-services-list article { background: rgba(255,255,255,0.42); border: none; border-radius: 14px; padding: 20px 24px; }
+.sl-services-list h3 { font-size: 22px; margin: 6px 0 8px; letter-spacing: -0.01em; }
+.sl-services-list p { font-size: 14px; line-height: 1.5; margin: 0; opacity: 0.85; }
+.sl-services-list .sl-label { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; opacity: 0.7; margin: 0; }
 .sl-process { background: #fffdf7; }
 .sl-process ol { display: grid; grid-template-columns: repeat(3,1fr); gap: 50px; list-style: none; padding: 0; }
 .sl-step { font-size: 72px; font-weight: 800; color: #bf4c37; line-height: 1; display: block; margin-bottom: 25px; }
@@ -803,7 +807,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-local-copy > p:first-child { font-size: 14px; }
 .sl-places { margin-top: 35px; max-width: 340px; font-size: 14px; line-height: 2; }
 .sl-local > img { width: 60%; position: absolute; right: -4%; bottom: 30px; transform: rotate(-6deg); }
-.sl-process-faq { display: grid; grid-template-columns: 1fr 1.4fr; gap: 64px; margin-top: 96px; padding-top: 64px; border-top: 1px solid rgba(24,60,54,.22); }
+.sl-process-faq { display: block; margin-top: 0; padding-top: 0; border-top: none; }
 .sl-process-faq h2 { font-size: 44px; margin-bottom: 25px; }
 .sl-process-faq details { border-bottom: 1px solid #183c3655; padding: 20px 0; }
 .sl-process-faq details:first-child { border-top: 1px solid #183c3655; }
@@ -812,7 +816,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-process-faq summary svg { flex-shrink: 0; transition: transform .2s; }
 .sl-process-faq details[open] svg { transform: rotate(45deg); }
 .sl-process-faq details p { font-size: 15px; margin-top: 20px; }
-.sl-contact { background: var(--sl-pink); display: grid; grid-template-columns: .8fr 1.2fr; padding: 100px max(6%, calc((100% - 1240px) / 2)); gap: 70px; }
+.sl-contact { background: var(--sl-pink); display: grid; grid-template-columns: .8fr 1.2fr; padding: 80px max(6%, calc((100% - 1240px) / 2)); gap: 70px; }
 .sl-contact-aside h2 { margin: 25px 0; }
 .sl-contact-aside > p { font-size: 14px; }
 .sl-contact-aside img { width: 80%; max-height: 280px; object-fit: contain; margin: 35px 0; transform: rotate(-7deg); }
@@ -857,6 +861,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-intro-opening .sl-product-sneakers { width: 255px; left: 10%; bottom: -10px; transform: rotate(24deg); }
 .sl-story-rule { width: min(1120px, 100% - 48px); height: 0; margin: 84px auto; border-top: 1px solid rgba(24,60,54,.28); }
 .sl-pink-industries, .sl-pink-examples { width: min(1120px, 100% - 48px); margin: 0 auto; }
+.sl-pink-industries { background: #fffdf7; width: 100%; max-width: none; margin: 0; padding-left: max(24px, calc((100% - 1120px) / 2)); padding-right: max(24px, calc((100% - 1120px) / 2)); }
 .sl-pink-industries-lede { margin-top: 26px; }
 .sl-industry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 48px; margin-top: 44px; border-bottom: 1px solid rgba(24,60,54,.28); }
 .sl-industry-grid a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; border-top: 1px solid rgba(24,60,54,.28); font-size: 20px; font-weight: 700; min-height: 72px; }
@@ -876,13 +881,46 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-intro-copy p { margin: 30px auto 20px; max-width: 49ch; }
 .sl-intro-copy > p:first-child { font-size: 15px; margin-top: 0; margin-bottom: 24px; }
 .sl-intro-note { position: absolute; right: 8%; bottom: 70px; margin: 0; transform: rotate(-5deg); }
-.sl-services { background: #acdce6; padding-top: 130px; overflow: hidden; }
+.sl-services { background: #8ccee3; padding: 48px 0 56px; overflow: hidden; }
+.sl-services .sl-section-top { align-items: flex-start; gap: 40px; margin-bottom: 32px; }
+.sl-services .sl-service-layout { grid-template-columns: 1fr 1.05fr; align-items: start; gap: 48px; }
+.sl-process { position: relative; }
+.sl-faq-section { position: relative; background: #b3e0eb; }
+.sl-faq-section::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #fffdf7; clip-path: polygon(0 0,100% 0,100% 70%,90% 52%,80% 78%,70% 43%,60% 72%,50% 32%,40% 70%,30% 40%,20% 72%,10% 52%,0 70%); z-index: 1; }
+.sl-faq-section::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 48px; background: #f4bbcd; clip-path: polygon(0 70%,10% 52%,20% 72%,30% 40%,40% 70%,50% 32%,60% 72%,70% 43%,80% 78%,90% 52%,100% 74%,100% 100%,0 100%); z-index: 1; }
+.sl-faq-chat { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; min-height: 88vh; padding: 40px max(6%, calc((100% - 1280px) / 2)) 60px; }
+.sl-faq-chat .sl-faq-product--top { margin: 0 0 24px; max-width: 300px; }
+.sl-faq-chat-left h2 { font-size: clamp(40px, 5vw, 64px); font-weight: 800; color: #0f2e2c; margin: 0 0 16px; letter-spacing: -0.02em; line-height: 1.05; }
+.sl-faq-chat-sub { color: #183c36; font-size: 18px; margin: 0 0 28px; max-width: 44ch; line-height: 1.55; }
+.sl-faq-box { display: flex; gap: 12px; align-items: center; background: #fff; border: 1px solid #d8d8d8; border-radius: 16px; padding: 10px 10px 10px 24px; box-shadow: 0 4px 24px rgba(15,46,44,.06); }
+.sl-faq-box input { flex: 1; border: none; outline: none; font-size: 17px; color: #183c36; background: transparent; min-width: 0; }
+.sl-faq-box input::placeholder { color: #9aa5a3; }
+.sl-faq-box button { background: #0f2e2c; color: #fff; border: none; border-radius: 12px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.sl-faq-box button:hover { background: #0c2422; }
+.sl-faq-box button:disabled { cursor: wait; opacity: .65; }
+.sl-faq-answer { background: #f2f2f2; border-radius: 16px; padding: 24px 28px; margin-top: 20px; }
+.sl-faq-asked { font-weight: 700; color: #0f2e2c; margin: 0 0 10px; font-size: 17px; overflow-wrap: anywhere; }
+.sl-faq-answer p:not(.sl-faq-asked) { margin: 0; color: #183c36; line-height: 1.65; font-size: 16px; }
+.sl-faq-form-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.sl-faq-disclaimer { font-size: 13px; color: #9aa5a3; margin: 20px 0 0; max-width: 52ch; line-height: 1.5; }
+.sl-faq-chat .sl-faq-product { margin-top: 36px; max-width: 380px; }
+.sl-faq-chat-right .sl-faq-try { font-weight: 700; color: #0f2e2c; margin: 0 0 20px; font-size: 18px; }
+.sl-faq-pill { display: block; width: 100%; max-width: 380px; text-align: left; background: #f2f2f2; border: none; border-radius: 24px; padding: 16px 24px; margin: 0 0 12px; font-size: 15px; line-height: 1.45; color: #183c36; cursor: pointer; transition: background .2s; }
+.sl-faq-pill:hover { background: #e4e4e4; }
+.sl-faq-chat-right .sl-link { margin-top: 24px; display: inline-flex; font-size: 17px; font-weight: 600; }
+.sl-process::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #8ccee3; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); }
+.sl-footer { position: relative; }
+.sl-footer::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #f3d958; clip-path: polygon(0 0,100% 0,100% 70%,90% 52%,80% 78%,70% 43%,60% 72%,50% 32%,40% 70%,30% 40%,20% 72%,10% 52%,0 70%); z-index: 1; }
+.sl-contact { position: relative; }
+.sl-contact::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #f4bbcd; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); }
+.sl-local::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #f4bbcd; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); z-index: 1; }
 .sl-services::before { content: ''; position: absolute; inset: -1px 0 auto; height: 48px; background: #efbdd0; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); }
 .sl-product-duet { position: relative; min-height: 610px; }
 .sl-product-duet .sl-product-skincare { width: 390px; position: absolute; left: 0; top: -20px; transform: rotate(-18deg); }
+.sl-product-duet .sl-pump-bottle { translate: var(--pump-align-x, 0px) 0; }
 .sl-product-duet .sl-product-croissant { width: 420px; position: absolute; bottom: -10px; right: -15px; transform: rotate(14deg); }
 .sl-product-duet p { position: absolute; top: 210px; right: 0; font-family: Georgia, serif; font-style: italic; font-size: 34px; line-height: 1; transform: rotate(8deg); }
-.sl-handling-note { font-size: 13px !important; max-width: 65ch !important; margin: 35px 0 0 auto; }
+.sl-services .sl-handling-note { font-size: 13px !important; max-width: none !important; margin: 22px 0 0; padding-top: 18px; border-top: 1px solid rgba(15,46,44,0.25); opacity: 0.8; }
 .sl-local { min-height: 0; gap: 70px; background: #f3d958; }
 .sl-destinations { align-self: center; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; transform: rotate(-5deg); }
 .sl-destinations span, .sl-destinations a { padding: 8px 20px; color: #fffdf7; background: var(--sl-ink); font-size: 28px; font-weight: 700; }
@@ -903,11 +941,14 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-pump-window { position: absolute; inset: 0 0 72.3%; overflow: hidden; }
 .sl-pump-body { position: absolute; inset: 0; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; clip-path: inset(27.7% 0 0); }
 .sl-pump-head { position: absolute; inset: 0; height: 361%; background: url('/assets/editorial-sourced/product-cutouts.png') no-repeat 50% 0 / 300% 200%; transform: translateY(var(--pump-press)); transition: transform .12s steps(2, end); }
-.sl-pump-nozzle { position: absolute; left: 18%; top: 8%; width: 1px; height: 1px; }
+.sl-pump-nozzle { position: absolute; left: 38%; top: 8%; width: 1px; height: 1px; }
 .sl-lotion-overlay { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
 .sl-lotion-drop, .sl-lotion-splash { position: absolute; left: 0; top: 0; color: #4fb7c4; filter: none; }
 .sl-lotion-drop svg, .sl-lotion-splash svg { display: block; width: 100%; height: 100%; overflow: visible; fill: currentColor; }
 .sl-lotion-drop { opacity: 0; }
+.sl-drop-impact { display: none; }
+.sl-lotion-drop[data-phase="impact"] .sl-drop-falling { display: none; }
+.sl-lotion-drop[data-phase="impact"] .sl-drop-impact { display: block; }
 .sl-lotion-splash { width: 72px; height: 52px; opacity: 0; transform-origin: 0 0; }
 .lotion-pop-line { fill: none; stroke: currentColor; stroke-width: 7; stroke-linecap: round; }
 .pull-secret { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: #fff; color: #101010; }
@@ -967,7 +1008,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-story p { font-size: 15px; }
   .sl-route { padding: 16px 24px; font-size: 12px; }
   .sl-route span:last-child { display: none; }
-  .sl-service-layout, .sl-local, .sl-contact { grid-template-columns: 1fr; }
+  .sl-service-layout, .sl-local, .sl-contact { grid-template-columns: minmax(0, 1fr); }
   .sl-sticker { width: 115px; height: 115px; font-size: 16px; right: 0; }
   .sl-intro-note { margin-top: 15px; }
   .sl-section-top { display: block; margin-bottom: 35px; }
@@ -981,6 +1022,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-local > img { width: 100%; bottom: 15px; right: -12%; max-height: 260px; object-fit: contain; }
   .sl-process-faq h2 { font-size: 32px; }
   .sl-contact { padding: 60px 24px; }
+  .sl-contact-aside, .sl-contact .section-contact { min-width: 0; }
   .sl-contact-aside img { display: none; }
   .sl-contact-aside > p, .sl-contact-aside h2, .sl-contact-products { display: none; }
   .sl-contact-aside ul { margin-top: 0; }
@@ -999,6 +1041,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-services { padding-top: 85px; }
   .sl-product-duet { min-height: 420px; width: 100%; max-width: 370px; justify-self: center; }
   .sl-product-duet .sl-product-skincare { width: 260px; top: 0; left: -25px; }
+  .sl-pump-nozzle { left: 29%; }
   .sl-product-duet .sl-product-croissant { width: 280px; right: -10px; bottom: -10px; }
   .sl-product-duet p { top: 180px; right: 0; font-size: 28px; }
   .sl-local { padding-bottom: 65px; gap: 45px; overflow: hidden; }
@@ -1023,6 +1066,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-faq-product { display: none; }
   .sl-faq-product { margin: 20px 0 0; }
   .sl-faq-product .sl-product { width: 110px; }
+  .sl-faq-chat { grid-template-columns: minmax(0, 1fr); gap: 36px; min-height: 0; padding: 68px 24px 72px; }
+  .sl-faq-chat-left, .sl-faq-chat-right { min-width: 0; }
+  .sl-faq-box { padding-left: 16px; }
+  .sl-faq-pill { max-width: none; }
   .sl-contact-products { height: 160px; max-width: 260px; margin: 20px 0; }
   .sl-contact-products .sl-product-croissant { width: 160px; }
   .sl-contact-products .sl-product-skincare { width: 145px; right: 0; }
@@ -1037,4 +1084,120 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   html { scroll-behavior: auto; scroll-snap-type: none; }
   .sl-pump-head { transition: none; }
   .pull-secret-obunga { animation: none; opacity: 0; }
+}
+
+/* Mock overhaul — desktop only (min-width: 651px). Mobile is untouched. */
+.sl-hero-static,
+.sl-d-industries,
+.sl-d-examples,
+.sl-d-3pl,
+.sl-channels,
+.sl-story-rule--channels { display: none; }
+.sl-d-rule { display: none; }
+@media (min-width: 651px) {
+  /* Hide the mobile structures on desktop. */
+  .sl-intro-opening { display: none; }
+  .sl-story-rule--intro { display: none; }
+  .sl-industries-mobile { display: none; }
+  .sl-examples-mobile { display: none; }
+
+  /* Shared mock pieces. */
+  .sl-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #183c36; margin: 0 0 18px; }
+  .sl-d-rule { display: block; width: 100%; border-top: 1px solid rgba(24,60,54,.28); }
+
+  /* Static hero (replaces the collage hero on desktop). */
+  .sl-hero-static { display: block; position: relative; background: #efbdd0; overflow: hidden; padding: 60px 0 0; }
+  .sl-hero-static__inner { width: min(1120px, 100% - 48px); margin: 0 auto; position: relative; z-index: 2; padding: 20px 0 24px; }
+  .sl-hero-static h1 { font-size: clamp(30px, 4.4vw, 52px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.06; margin: 0 0 16px; }
+  .sl-hero-static__sub { font-size: 15px; line-height: 1.55; color: #183c36; max-width: 46ch; margin: 0; }
+  .sl-hero-static__art { position: absolute; top: 0; right: max(0px, calc((100% - 1120px) / 2 - 24px)); width: clamp(200px, 30vw, 380px); height: 100%; z-index: 1; pointer-events: none; }
+  .sl-hero-static__sun { position: absolute; z-index: 1; width: 53%; height: auto; left: 29%; top: 40%; }
+  .sl-hero-static__mountains { position: absolute; z-index: 2; width: 100%; height: auto; left: 0; bottom: 4%; }
+  .sl-hero-static__palms { position: absolute; z-index: 3; width: 71%; height: auto; right: 0; top: 12%; }
+  .sl-d-rule--hero { width: min(1120px, 100% - 48px); position: relative; z-index: 2; }
+
+  /* Desktop industries cards. */
+  .sl-d-industries { display: block; position: relative; padding: 112px 0 56px; }
+  .sl-d-industries h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 12px; }
+  .sl-d-industries__sub { font-size: 15px; color: #183c36; margin: 0 0 30px; }
+  .sl-d-cards-wrap { position: relative; }
+  .sl-d-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 600px; margin: 0 auto; position: relative; z-index: 2; }
+  .sl-d-cards button { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fffdf7; border: 2px solid #111; border-radius: 10px; padding: 14px 20px; color: #183c36; font-weight: 700; font-size: 14px; line-height: 1.32; cursor: pointer; font-family: inherit; text-align: left; width: 100%; }
+  .sl-d-checkbox { flex: none; width: 22px; height: 22px; border: 2px solid #d14a35; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; }
+  .sl-d-card--selected .sl-d-checkbox { background: #d14a35; }
+  .sl-d-industries__kiwi { position: absolute; left: calc((100% - 100vw) / 2 + 48px); top: 50%; width: 170px; z-index: 1; transform: translateY(-50%); }
+  .sl-d-industries__kiwi .sl-product { width: 100%; transform: rotate(-14deg); }
+  .sl-d-industries__sneakers { position: absolute; right: calc((100% - 100vw) / 2 + 48px); top: 50%; width: 160px; z-index: 1; transform: translateY(-50%); }
+  .sl-d-industries__sneakers .sl-product { width: 100%; transform: rotate(12deg); }
+
+  /* Sales channels — refined to the mock. */
+  .sl-story-rule--industries-end { display: none; }
+  .sl-story-rule--channels { display: block; border-top: 1px solid rgba(24,60,54,.28); margin: 0 auto; }
+  .sl-zigzag-cream { height: 48px; background: #fffdf7; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
+  .sl-zigzag-mint { height: 48px; background: #b3e0eb; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
+  .sl-channels { display: block; position: relative; width: min(1120px, 100% - 48px); margin: 0 auto; padding: 60px 0 66px; }
+  .sl-channels h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 32px; padding-right: 200px; }
+  .sl-channel-row { display: grid; width: min(830px, calc(100% - 220px)); grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "walmart etsy shopify" "amazon tiktok more"; gap: 48px 32px; align-items: center; justify-items: center; }
+  .sl-channel-logo--walmart { grid-area: walmart; }
+  .sl-channel-logo--etsy { grid-area: etsy; }
+  .sl-channel-logo--shopify { grid-area: shopify; }
+  .sl-channel-logo--amazon { grid-area: amazon; }
+  .sl-channel-logo--tiktok { grid-area: tiktok; }
+  .sl-channel-more { grid-area: more; }
+  .sl-channel-logo { display: inline-flex; align-items: center; gap: 10px; flex: none; animation: product-paper-nudge 13.7s steps(2, end) infinite; animation-play-state: paused; }
+  .sl-channel-logo--visible { animation-play-state: running; }
+  .sl-channel-logo--etsy { animation-duration: 12.4s; animation-delay: -2.1s; }
+  .sl-channel-logo--shopify { animation-duration: 15.8s; animation-delay: -7.3s; }
+  .sl-channel-logo--amazon { animation-duration: 14.2s; animation-delay: -4.6s; }
+  .sl-channel-logo--tiktok { animation-duration: 16.9s; animation-delay: -9.8s; }
+  .sl-channel-logo--walmart { animation-duration: 13.1s; animation-delay: -5.9s; }
+  .sl-channel-logo img { display: block; width: 190px; height: auto; max-width: none; }
+  .sl-channel-logo--walmart img { width: 205px; }
+  .sl-channel-logo--tiktok img { width: 42px; }
+  .sl-channel-logo-text { font-size: 24px; font-weight: 700; color: #111111; line-height: 1; white-space: nowrap; }
+  .sl-channel-more { font-size: 20px; font-weight: 800; color: #111111; white-space: nowrap; }
+  .sl-channels-product { position: absolute; right: -24px; top: 50%; transform: translateY(-54%); width: clamp(150px, 17vw, 230px); pointer-events: none; }
+  .sl-channels-product .sl-product { width: 100%; }
+
+  /* Desktop example cards. */
+  .sl-d-examples { display: block; padding: 64px 0 0; }
+  .sl-d-examples h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 34px; text-align: right; }
+  .sl-d-example-cards { display: block; margin-bottom: 64px; }
+  .sl-d-example-single { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; background: var(--cream); border-radius: 14px; padding: 40px 36px; box-shadow: 0 1px 3px rgba(24,60,54,.07); }
+  .sl-d-example-cards article { display: flex; align-items: stretch; background: var(--cream); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(24,60,54,.07); }
+  .sl-d-example-card__copy { flex: 1 1 56%; padding: 40px 36px; display: flex; flex-direction: column; align-items: flex-start; }
+  .sl-d-example-card__copy > span { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #183c36; }
+  .sl-d-example-card__copy h3 { font-size: clamp(24px, 2.6vw, 30px); font-weight: 800; color: #111111; letter-spacing: -0.01em; line-height: 1.16; margin: 16px 0 14px; }
+  .sl-d-example-card__copy p { font-size: 15px; line-height: 1.6; color: #183c36; margin: 0 0 24px; }
+  .sl-d-example-card__copy a { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; color: #183c36; text-decoration: underline; text-underline-offset: 5px; }
+  .sl-d-example-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .sl-d-example-card__media { position: relative; flex: 1 1 44%; width: 44%; min-height: 320px; overflow: hidden; }
+  .sl-d-example-card__mountains { position: absolute; z-index: 2; top: -1%; left: -2%; width: 104%; height: 38%; object-fit: cover; object-position: center bottom; clip-path: polygon(0 0, 100% 0, 100% 70%, 93% 80%, 85% 72%, 76% 84%, 67% 74%, 58% 86%, 49% 76%, 40% 85%, 31% 75%, 22% 84%, 13% 74%, 5% 82%, 0 72%); }
+  .sl-d-example-card__palm { position: absolute; z-index: 3; right: -2%; top: 2%; width: 34%; height: auto; }
+
+  /* Desktop 3PL band. */
+  .sl-d-3pl { display: block; width: min(1120px, 100% - 48px); margin: 0 auto; padding: 60px 0 56px; position: relative; }
+  .sl-d-3pl__inner { display: flex; align-items: center; gap: clamp(28px, 3.6vw, 48px); }
+  .sl-d-3pl__art { position: relative; flex: none; width: 265px; height: 190px; }
+  .sl-d-3pl__tape { position: absolute; z-index: 2; left: 62px; bottom: 6px; width: 175px; height: auto; object-fit: contain; }
+  .sl-d-3pl__palm { position: absolute; z-index: 1; left: 0; bottom: 0; width: 92px; height: auto; }
+  .sl-d-3pl__copy h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0; white-space: nowrap; }
+  .sl-d-3pl__divider { flex: none; align-self: stretch; width: 2px; background: #4fb7c4; min-height: 96px; }
+  .sl-d-3pl__desc { font-size: 16px; line-height: 1.6; color: #183c36; max-width: 36ch; margin: 0; }
+}
+@media (min-width: 651px) and (max-width: 1000px) {
+  .sl-channel-row { width: calc(100% - 150px); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "walmart etsy" "shopify amazon" "tiktok more"; gap: 32px 20px; }
+  .sl-channel-logo img { width: min(100%, 170px); }
+  .sl-channel-logo--walmart img { width: min(100%, 185px); }
+  .sl-channel-logo--tiktok img { width: 38px; }
+  .sl-channel-logo-text { font-size: 20px; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .sl-story .sl-channel-logo:hover {
+    animation: product-hover-shake .24s steps(1, end) infinite;
+    animation-play-state: running;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sl-channel-logo { animation: none; }
 }

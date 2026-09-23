@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 
 const SERVICE_AREAS = [
   'Los Angeles',
@@ -77,13 +77,6 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="font-semibold text-secondary-50 mb-4">Contact</h4>
             <div className="space-y-3 text-sm">
-              <a
-                href="tel:5302155987"
-                className="flex items-center gap-2 text-secondary-200 hover:text-secondary-100 transition-colors"
-              >
-                <Phone size={16} />
-                (530) 215-5987
-              </a>
               <a
                 href="mailto:louwrensventures@gmail.com"
                 className="flex items-center gap-2 text-secondary-200 hover:text-secondary-100 transition-colors"
