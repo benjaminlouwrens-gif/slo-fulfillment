@@ -213,6 +213,29 @@ export function FulfillmentStory() {
     </section>
     <div className="sl-contact"><div className="sl-contact-aside"><p>Next stop: a better fit.</p><h2>Let&apos;s make<br />some room.</h2><div className="sl-contact-products" aria-hidden="true"><Product name="croissant" /><Product name="skincare" /></div><ul><li><Check size={18}/> Free for brands</li><li><Check size={18}/> Personal introductions</li><li><Check size={18}/> You choose your partner</li></ul></div><ContactForm /></div>
     <section className="sl-local sl-band"><div className="sl-local-copy"><p>Rooted here. Ready to go places.</p><h2>SoCal is<br />our home turf.</h2><p>Find a fulfillment partner close to the ports, your customers, or the next stop in your supply chain.</p><button type="button" className="sl-local-sign-trigger" aria-label="Open the hidden product pull page" onClick={() => window.dispatchEvent(new Event('slocal:open-pull-secret'))}><img className="sl-local-sign" src="/assets/collage/approved-cutouts/road-sign-railings.png" alt="Los Angeles, Orange County, San Diego, Inland Empire road sign" loading="lazy" /></button></div><div className="sl-destinations"><span>Los Angeles</span><span>Orange County</span><span>Inland Empire</span><span>Ontario & Riverside</span><span>San Diego</span><a href="#contact">Your next stop <ArrowUpRight /></a></div></section>
-    <footer className="sl-footer"><a className="sl-footer-name" href="#">SloCal Fulfillment<ArrowUpRight /></a><div><p>Good things ship from here.</p><a href="mailto:louwrensventures@gmail.com">louwrensventures@gmail.com</a></div><div className="sl-footer-bottom"><span>Southern California. Independent fulfillment matchmaking.</span><span>&copy; {new Date().getFullYear()} Southern LoCal Fulfillment</span></div></footer>
+    <footer className="sl-footer">
+      <div className="sl-footer-inner">
+        <section className="sl-footer-owner" id="about" aria-labelledby="about-owner-title">
+          <div className="sl-footer-owner-copy">
+            <p className="sl-footer-eyebrow">About the owner</p>
+            <h2 id="about-owner-title">Hi, I&apos;m Benyamin.</h2>
+            <p>Before building SloCal Fulfillment, I worked as a warehouse puller at Fasteners Inc. That work gave me a firsthand respect for the care behind every order.</p>
+            <p>Later, while working at Cayucos Sausage Co., I wanted to help my bosses bring their well-known mustard and seasoning to more store shelves and online shoppers. On a call with the owner of Craveble.com, that question sparked the idea for this site.</p>
+            <p>Now I help product brands find fulfillment partners that fit what they make and where they want to go.</p>
+            <p className="sl-footer-owner-note">SloCal Fulfillment is independent and is not affiliated with Fasteners Inc., Craveble.com, or Cayucos Sausage Co.</p>
+          </div>
+          <div className="sl-footer-owner-gallery" aria-label="Photos of Benyamin and warehouse work">
+            <img className="sl-footer-owner-photo sl-footer-owner-photo--portrait" src="/assets/owner/benyamin-portrait.jpg" alt="Benyamin Louwrens outdoors" loading="lazy" decoding="async" />
+            <img className="sl-footer-owner-photo sl-footer-owner-photo--warehouse" src="/assets/owner/warehouse-aisle.jpg" alt="A warehouse aisle lined with shelves" loading="lazy" decoding="async" />
+            <img className="sl-footer-owner-photo sl-footer-owner-photo--desk" src="/assets/owner/benyamin-at-work.jpg" alt="Benyamin working at his desk" loading="lazy" decoding="async" />
+          </div>
+        </section>
+        <div className="sl-footer-main">
+          <a className="sl-footer-name" href="#">SloCal Fulfillment<ArrowUpRight /></a>
+          <div className="sl-footer-contact"><p>Good things ship from here.</p><a href="mailto:louwrensventures@gmail.com">louwrensventures@gmail.com</a></div>
+        </div>
+        <div className="sl-footer-bottom"><span>Southern California. Independent fulfillment matchmaking.</span><span>&copy; {new Date().getFullYear()} Southern LoCal Fulfillment</span></div>
+      </div>
+    </footer>
   </div>;
 }
