@@ -69,6 +69,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   touch-action: pan-y;
   background: #b6c4c0;
 }
+.collage-hero-image { display: none; }
 .collage-paper-field {
   position: absolute;
   inset: 0;
@@ -624,6 +625,45 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
     display: none;
   }
 }
+@media (min-width: 1440px) {
+  .surf-scene > .collage-hero { display: none; }
+  .collage-hero-image {
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding-top: 64px;
+    overflow: hidden;
+    background: #b6c4c0;
+  }
+  .collage-hero-image__frame {
+    position: relative;
+    width: min(100%, calc((100svh - 64px) * 2.264));
+    aspect-ratio: 1442 / 637;
+    overflow: hidden;
+  }
+  .collage-hero-image__art {
+    position: absolute;
+    top: -14.443%;
+    left: -.693%;
+    display: block;
+    width: 106.103%;
+    max-width: none;
+    height: auto;
+    pointer-events: none;
+  }
+  .collage-hero-image__sign {
+    position: absolute;
+    top: 56.8%;
+    left: 33.8%;
+    width: 32.3%;
+    height: 15.8%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .collage-hero-image__sign:focus-visible { outline-offset: 3px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
@@ -881,7 +921,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-intro-copy p { margin: 30px auto 20px; max-width: 49ch; }
 .sl-intro-copy > p:first-child { font-size: 15px; margin-top: 0; margin-bottom: 24px; }
 .sl-intro-note { position: absolute; right: 8%; bottom: 70px; margin: 0; transform: rotate(-5deg); }
-.sl-services { background: #8ccee3; padding: 48px 0 56px; overflow: hidden; }
+.sl-services { background: #8ccee3; padding: 48px max(6%, calc((100% - 1120px) / 2)) 56px; overflow: hidden; }
 .sl-services .sl-section-top { align-items: flex-start; gap: 40px; margin-bottom: 32px; }
 .sl-services .sl-service-layout { grid-template-columns: 1fr 1.05fr; align-items: start; gap: 48px; }
 .sl-process { position: relative; }
@@ -999,7 +1039,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-intro-opening .sl-product-headphones { width: 220px; top: 0; }
   .sl-intro-opening .sl-product-sneakers { width: 200px; left: 4%; }
   .sl-product-duet .sl-product-skincare { width: 310px; left: -40px; }
-  .sl-product-duet .sl-product-croissant { width: 330px; right: -20px; }
+  .sl-product-duet .sl-product-croissant { width: clamp(260px, calc(100vw - 460px), 330px); right: 0; }
   .sl-destinations span, .sl-destinations a { font-size: 22px; }
 }
 @media (max-width: 650px) {
@@ -1117,6 +1157,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-d-rule--hero { width: min(1120px, 100% - 48px); position: relative; z-index: 2; }
 
   /* Desktop industries cards. */
+  .sl-pink-industries { padding-inline: max(6%, calc((100% - 1120px) / 2)); }
   .sl-d-industries { display: block; position: relative; padding: 112px 0 56px; }
   .sl-d-industries h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 12px; }
   .sl-d-industries__sub { font-size: 15px; color: #183c36; margin: 0 0 30px; }
@@ -1125,9 +1166,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-d-cards button { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--cream); border: 2px solid #111; border-radius: 10px; padding: 14px 20px; color: #183c36; font-weight: 700; font-size: 14px; line-height: 1.32; cursor: pointer; font-family: inherit; text-align: left; width: 100%; }
   .sl-d-checkbox { flex: none; width: 22px; height: 22px; border: 2px solid #d14a35; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; }
   .sl-d-card--selected .sl-d-checkbox { background: #d14a35; }
-  .sl-d-industries__kiwi { position: absolute; left: calc((100% - 100vw) / 2 + 48px); top: 50%; width: 170px; z-index: 1; transform: translateY(-50%); }
+  .sl-d-industries__kiwi { position: absolute; left: 0; top: 50%; width: clamp(90px, 13vw, 170px); z-index: 1; transform: translateY(-50%); }
   .sl-d-industries__kiwi .sl-product { width: 100%; transform: rotate(-14deg); }
-  .sl-d-industries__sneakers { position: absolute; right: calc((100% - 100vw) / 2 + 48px); top: 50%; width: 160px; z-index: 1; transform: translateY(-50%); }
+  .sl-d-industries__sneakers { position: absolute; right: 0; top: 50%; width: clamp(85px, 12vw, 160px); z-index: 1; transform: translateY(-50%); }
   .sl-d-industries__sneakers .sl-product { width: 100%; transform: rotate(12deg); }
 
   /* Sales channels — refined to the mock. */
@@ -1135,7 +1176,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-story-rule--channels { display: block; border-top: 1px solid rgba(24,60,54,.28); margin: 0 auto; }
   .sl-zigzag-cream { height: 48px; background: var(--cream); clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
   .sl-zigzag-mint { height: 48px; background: #b3e0eb; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
-  .sl-channels { display: block; position: relative; width: min(1120px, 100% - 48px); margin: 0 auto; padding: 60px 0 66px; }
+  .sl-channels { display: block; position: relative; width: min(1120px, 88%); margin: 0 auto; padding: 60px 0 66px; }
   .sl-channels h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 32px; padding-right: 200px; }
   .sl-channel-row { display: grid; width: min(830px, calc(100% - 220px)); grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "walmart etsy shopify" "amazon tiktok more"; gap: 48px 32px; align-items: center; justify-items: center; }
   .sl-channel-logo--walmart { grid-area: walmart; }
@@ -1156,10 +1197,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-channel-logo--tiktok img { width: 42px; }
   .sl-channel-logo-text { font-size: 24px; font-weight: 700; color: #111111; line-height: 1; white-space: nowrap; }
   .sl-channel-more { font-size: 20px; font-weight: 800; color: #111111; white-space: nowrap; }
-  .sl-channels-product { position: absolute; right: -24px; top: 50%; transform: translateY(-54%); width: clamp(150px, 17vw, 230px); pointer-events: none; }
+  .sl-channels-product { position: absolute; right: 0; top: 50%; transform: translateY(-54%); width: clamp(150px, 17vw, 230px); }
   .sl-channels-product .sl-product { width: 100%; }
 
   /* Desktop example cards. */
+  .sl-pink-examples { width: min(1120px, 88%); }
   .sl-d-examples { display: block; padding: 64px 0 0; }
   .sl-d-examples h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 34px; text-align: right; }
   .sl-d-example-cards { display: block; margin-bottom: 64px; }
@@ -1186,7 +1228,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-d-3pl__desc { font-size: 16px; line-height: 1.6; color: #183c36; max-width: 36ch; margin: 0; }
 }
 @media (min-width: 651px) and (max-width: 1000px) {
-  .sl-channel-row { width: calc(100% - 150px); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "walmart etsy" "shopify amazon" "tiktok more"; gap: 32px 20px; }
+  .sl-d-cards { max-width: min(600px, calc(100% - 240px)); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sl-d-cards button { min-width: 0; padding: 12px 14px; }
+  .sl-channel-row { width: calc(100% - clamp(170px, 20vw, 220px)); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "walmart etsy" "shopify amazon" "tiktok more"; gap: 32px 20px; }
+  .sl-channel-logo { justify-content: center; }
   .sl-channel-logo img { width: min(100%, 170px); }
   .sl-channel-logo--walmart img { width: min(100%, 185px); }
   .sl-channel-logo--tiktok img { width: 38px; }
@@ -1200,4 +1245,111 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 }
 @media (prefers-reduced-motion: reduce) {
   .sl-channel-logo { animation: none; }
+}
+
+@media (max-width: 650px) {
+  .sl-intro-opening, .sl-story-rule--intro, .sl-industries-mobile, .sl-examples-mobile { display: none; }
+  .sl-intro { padding-bottom: 38px; }
+  .sl-d-industries, .sl-channels, .sl-d-examples { display: block; }
+  .sl-pink-industries { padding-inline: 24px; }
+  .sl-d-industries { padding: 96px 0 34px; }
+  .sl-d-industries .sl-eyebrow, .sl-d-examples .sl-eyebrow { margin: 0 0 10px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+  .sl-d-industries h2 { font-size: 34px; line-height: 1.08; }
+  .sl-d-industries__sub { margin: 10px 0 22px; font-size: 14px; }
+  .sl-d-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .sl-d-cards button { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; min-height: 68px; padding: 9px 10px; border: 2px solid #111; border-radius: 8px; background: var(--cream); color: var(--sl-ink); font: 700 12px/1.25 Arial, Helvetica, sans-serif; text-align: left; cursor: pointer; }
+  .sl-d-checkbox { display: grid; flex: none; place-items: center; width: 18px; height: 18px; border: 2px solid #d14a35; border-radius: 4px; color: white; }
+  .sl-d-card--selected .sl-d-checkbox { background: #d14a35; }
+  .sl-d-industries__kiwi, .sl-d-industries__sneakers { display: none; }
+  .sl-zigzag-cream { height: 25px; background: var(--cream); clip-path: polygon(0 0,100% 0,100% 45%,85% 75%,70% 42%,55% 85%,40% 40%,25% 75%,10% 45%,0 70%); }
+
+  .sl-channels { width: calc(100% - 48px); margin: 0 auto; padding: 28px 0 38px; }
+  .sl-channels h2 { margin: 0 0 22px; font-size: 30px; line-height: 1.08; }
+  .sl-channel-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "walmart etsy" "shopify amazon" "tiktok more"; gap: 18px 12px; align-items: center; justify-items: center; }
+  .sl-channel-logo--walmart { grid-area: walmart; }
+  .sl-channel-logo--etsy { grid-area: etsy; }
+  .sl-channel-logo--shopify { grid-area: shopify; }
+  .sl-channel-logo--amazon { grid-area: amazon; }
+  .sl-channel-logo--tiktok { grid-area: tiktok; }
+  .sl-channel-more { grid-area: more; font-size: 15px; font-weight: 800; }
+  .sl-channel-logo { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; width: 100%; }
+  .sl-channel-logo img { display: block; width: min(100%, 150px); height: auto; }
+  .sl-channel-logo--walmart img { width: min(100%, 160px); }
+  .sl-channel-logo--tiktok img { width: 28px; flex: none; }
+  .sl-channel-logo-text { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .sl-channels-product { display: none; }
+
+  .sl-pink-examples { width: calc(100% - 48px); }
+  .sl-d-examples { padding: 12px 0 0; }
+  .sl-d-example-single { display: grid; gap: 18px; padding: 18px; background: var(--cream); border-radius: 8px; }
+  .sl-d-example-card__copy { min-width: 0; }
+  .sl-d-example-card__copy + .sl-d-example-card__copy { padding-top: 18px; border-top: 1px solid rgba(24,60,54,.22); }
+  .sl-d-example-card__copy > span { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+  .sl-d-example-card__copy h3 { margin: 7px 0; font-size: 22px; line-height: 1.12; }
+  .sl-d-example-card__copy p { margin: 0 0 9px; font-size: 13px; line-height: 1.45; }
+  .sl-d-example-card__copy a { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .sl-d-examples h2 { margin: 24px 0 0; font-size: 28px; line-height: 1.1; }
+
+  .sl-services { padding: 70px 24px 42px; }
+  .sl-services .sl-section-top { margin-bottom: 14px; }
+  .sl-services h2 { font-size: 34px; line-height: 1.08; }
+  .sl-services .sl-section-top > p { margin-top: 12px; font-size: 14px; line-height: 1.45; }
+  .sl-services .sl-service-layout { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .sl-product-duet { min-height: 290px; max-width: 342px; }
+  .sl-product-duet .sl-product-croissant { width: 220px; right: 0; bottom: 0; }
+  .sl-product-duet p { top: 22px; right: 0; font-size: 20px; }
+  .sl-lotion-drop { color: rgba(79, 183, 196, 0.35); }
+  .sl-services-list { gap: 8px; }
+  .sl-services-list article { padding: 13px 16px; border-radius: 8px; }
+  .sl-services-list h3 { margin: 3px 0 5px; font-size: 18px; }
+  .sl-services-list p { font-size: 13px; line-height: 1.42; }
+  .sl-services .sl-handling-note { margin-top: 13px; padding-top: 12px; font-size: 12px !important; line-height: 1.4; }
+
+  .sl-process { padding: 70px 24px 40px; }
+  .sl-process .sl-section-top { margin-bottom: 20px; }
+  .sl-process h2 { font-size: 34px; line-height: 1.08; }
+  .sl-process .sl-link { font-size: 14px; }
+  .sl-process ol { gap: 0; }
+  .sl-process li { position: relative; padding: 14px 0 14px 50px; border-top: 1px solid rgba(24,60,54,.24); }
+  .sl-process li:last-child { border-bottom: 1px solid rgba(24,60,54,.24); }
+  .sl-step { left: 0; top: 14px; font-size: 30px; }
+  .sl-process li h3 { margin: 0 0 5px; font-size: 19px; }
+  .sl-process li p { margin: 0; font-size: 14px; line-height: 1.45; }
+  .sl-process-products { display: none; }
+
+  .sl-faq-chat { padding: 66px 24px 54px; gap: 22px; }
+  .sl-faq-chat-left h2 { margin-bottom: 10px; font-size: 34px; }
+  .sl-faq-chat-sub { margin-bottom: 16px; font-size: 14px; line-height: 1.45; }
+  .sl-faq-box { padding: 6px 6px 6px 14px; border-radius: 8px; }
+  .sl-faq-box input { font-size: 16px; }
+  .sl-faq-box button { width: 44px; height: 44px; border-radius: 6px; }
+  .sl-faq-disclaimer { margin-top: 10px; font-size: 12px; }
+  .sl-faq-chat-right { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .sl-faq-chat-right .sl-faq-try { grid-column: 1 / -1; margin: 0 0 2px; font-size: 14px; }
+  .sl-faq-pill { width: 100%; min-height: 62px; margin: 0; padding: 10px; border-radius: 8px; font-size: 13px; line-height: 1.3; }
+  .sl-faq-chat-right .sl-link { grid-column: 1 / -1; margin-top: 10px; font-size: 14px; }
+
+  .sl-contact { padding: 66px 24px 44px; gap: 14px; }
+  .sl-contact-aside ul { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 0; }
+  .sl-contact-aside li { gap: 5px; font-size: 12px; }
+  .sl-contact-aside li svg { width: 15px; height: 15px; }
+  .sl-contact #contact h2 { margin-bottom: 8px; font-size: 30px; line-height: 1.08; }
+  .sl-contact #contact > p { margin-bottom: 16px; font-size: 14px; line-height: 1.45; }
+  .sl-contact #contact > div { margin-bottom: 16px; }
+  .sl-contact #contact form > .grid { gap: 14px; }
+  .sl-contact #contact form label { margin-bottom: 4px; }
+  .sl-contact #contact form input, .sl-contact #contact form select, .sl-contact #contact form textarea { min-height: 44px; padding: 10px 12px; font-size: 16px; }
+  .sl-contact #contact form > div.mt-8 { margin-top: 18px; }
+  .sl-contact #contact form > div.mt-4 { margin-top: 12px; }
+
+  .sl-local { display: block; min-height: 0; padding: 68px 24px 40px; }
+  .sl-local h2 { margin: 8px 0 12px; font-size: 34px; line-height: 1.08; }
+  .sl-local-copy > p { margin: 0; font-size: 14px; line-height: 1.45; }
+  .sl-local-sign-trigger { width: min(250px, 75%); margin: 16px auto 0; }
+  .sl-destinations { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 12px; margin-top: 8px; transform: none; }
+  .sl-destinations span { margin: 0 !important; padding: 0; background: none; color: var(--sl-ink); font-size: 12px; }
+  .sl-destinations a { flex: 0 0 100%; justify-content: center; width: auto; margin: 10px 0 0; padding: 8px 0; border: 0; font-size: 16px; text-decoration: underline; text-underline-offset: 6px; }
+  .sl-footer { padding: 42px 24px 24px; gap: 20px; }
+  .sl-footer-name { font-size: 28px; }
+  .sl-footer-bottom { gap: 8px; padding-top: 16px; }
 }

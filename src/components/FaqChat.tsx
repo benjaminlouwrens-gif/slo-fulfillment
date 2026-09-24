@@ -127,7 +127,7 @@ export function FaqChat() {
             {referred && !loading && <a className="sl-faq-form-link" href="#contact">Go to the consultation form <ArrowUpRight size={16} /></a>}
           </div>
         )}
-        <p className="sl-faq-disclaimer">AI answers can be inaccurate. Please do not include personal information in your question.</p>
+        <p className="sl-faq-disclaimer">Please do not include personal information in your question.</p>
         {!asked && (
           <div className="sl-faq-product" aria-hidden="true">
             <Product name="headphones" />

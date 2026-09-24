@@ -7,6 +7,18 @@ const CUTOUTS = '/assets/collage/approved-cutouts';
 export function Hero() {
   return (
     <SurfTransition>
+      <section className="collage-hero-image" aria-label="Southern LoCal Fulfillment introduction">
+        <div className="collage-hero-image__frame">
+          <img className="collage-hero-image__art" src="/assets/collage/hero-wide-screenshot.png" alt="" aria-hidden="true" draggable="false" />
+          <h1 className="sr-only">SloCal Fulfillment</h1>
+          <button
+            type="button"
+            className="collage-hero-image__sign"
+            aria-label="Swipe up to see if we can warehouse, pack and ship your products"
+            onClick={() => window.dispatchEvent(new Event('slocal:start-surf'))}
+          />
+        </div>
+      </section>
       <section className="collage-hero" aria-label="Southern LoCal Fulfillment introduction">
         <div className="collage-paper-field" aria-hidden="true"></div>
         <div className="collage-pastel-sun" aria-hidden="true"></div>
