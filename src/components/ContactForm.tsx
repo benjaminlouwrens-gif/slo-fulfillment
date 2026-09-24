@@ -20,7 +20,7 @@ const STEP_LABELS = ['Business Info', 'Fulfillment Needs', 'Final Details'];
 const STEP_SUBTITLES = ['Your business basics', 'How you fulfill today', 'The details that matter'];
 
 const inputCls =
-  'w-full px-4 py-3 border border-[#e5d5d8] rounded-lg bg-white text-[#183c36] placeholder-[#9aa5a3] focus:outline-none focus:ring-2 focus:ring-[#183c36]';
+  'w-full px-4 py-3 border border-[#e5d5d8] rounded-lg bg-[#f9edd7] text-[#183c36] placeholder-[#647a76] focus:outline-none focus:ring-2 focus:ring-[#183c36]';
 const labelCls = 'block text-sm font-medium text-[#183c36] mb-2';
 
 export const ContactForm: React.FC = () => {

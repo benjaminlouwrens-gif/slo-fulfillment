@@ -369,7 +369,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .surf-stage { position: relative; }
 .surf-pink-underlay { position: absolute; inset: 0; background: #efbdd0; pointer-events: none; }
 @media (min-width: 651px) {
-  .surf-pink-underlay { background: #fffdf7; }
+  .surf-pink-underlay { background: var(--cream); }
 }
 .surf-scene { position: relative; }
 .surf-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; }
@@ -861,7 +861,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-intro-opening .sl-product-sneakers { width: 255px; left: 10%; bottom: -10px; transform: rotate(24deg); }
 .sl-story-rule { width: min(1120px, 100% - 48px); height: 0; margin: 84px auto; border-top: 1px solid rgba(24,60,54,.28); }
 .sl-pink-industries, .sl-pink-examples { width: min(1120px, 100% - 48px); margin: 0 auto; }
-.sl-pink-industries { background: #fffdf7; width: 100%; max-width: none; margin: 0; padding-left: max(24px, calc((100% - 1120px) / 2)); padding-right: max(24px, calc((100% - 1120px) / 2)); }
+.sl-pink-industries { background: var(--cream); width: 100%; max-width: none; margin: 0; padding-left: max(24px, calc((100% - 1120px) / 2)); padding-right: max(24px, calc((100% - 1120px) / 2)); }
 .sl-pink-industries-lede { margin-top: 26px; }
 .sl-industry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 48px; margin-top: 44px; border-bottom: 1px solid rgba(24,60,54,.28); }
 .sl-industry-grid a { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; border-top: 1px solid rgba(24,60,54,.28); font-size: 20px; font-weight: 700; min-height: 72px; }
@@ -892,21 +892,21 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
 .sl-faq-chat .sl-faq-product--top { margin: 0 0 24px; max-width: 300px; }
 .sl-faq-chat-left h2 { font-size: clamp(40px, 5vw, 64px); font-weight: 800; color: #0f2e2c; margin: 0 0 16px; letter-spacing: -0.02em; line-height: 1.05; }
 .sl-faq-chat-sub { color: #183c36; font-size: 18px; margin: 0 0 28px; max-width: 44ch; line-height: 1.55; }
-.sl-faq-box { display: flex; gap: 12px; align-items: center; background: #fff; border: 1px solid #d8d8d8; border-radius: 16px; padding: 10px 10px 10px 24px; box-shadow: 0 4px 24px rgba(15,46,44,.06); }
+.sl-faq-box { display: flex; gap: 12px; align-items: center; background: var(--cream); border: 1px solid #d8d8d8; border-radius: 16px; padding: 10px 10px 10px 24px; box-shadow: 0 4px 24px rgba(15,46,44,.06); }
 .sl-faq-box input { flex: 1; border: none; outline: none; font-size: 17px; color: #183c36; background: transparent; min-width: 0; }
-.sl-faq-box input::placeholder { color: #9aa5a3; }
+.sl-faq-box input::placeholder { color: #647a76; }
 .sl-faq-box button { background: #0f2e2c; color: #fff; border: none; border-radius: 12px; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
 .sl-faq-box button:hover { background: #0c2422; }
 .sl-faq-box button:disabled { cursor: wait; opacity: .65; }
-.sl-faq-answer { background: #f2f2f2; border-radius: 16px; padding: 24px 28px; margin-top: 20px; }
+.sl-faq-answer { background: var(--cream); border-radius: 16px; padding: 24px 28px; margin-top: 20px; }
 .sl-faq-asked { font-weight: 700; color: #0f2e2c; margin: 0 0 10px; font-size: 17px; overflow-wrap: anywhere; }
 .sl-faq-answer p:not(.sl-faq-asked) { margin: 0; color: #183c36; line-height: 1.65; font-size: 16px; }
 .sl-faq-form-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .sl-faq-disclaimer { font-size: 13px; color: #9aa5a3; margin: 20px 0 0; max-width: 52ch; line-height: 1.5; }
 .sl-faq-chat .sl-faq-product { margin-top: 36px; max-width: 380px; }
 .sl-faq-chat-right .sl-faq-try { font-weight: 700; color: #0f2e2c; margin: 0 0 20px; font-size: 18px; }
-.sl-faq-pill { display: block; width: 100%; max-width: 380px; text-align: left; background: #f2f2f2; border: none; border-radius: 24px; padding: 16px 24px; margin: 0 0 12px; font-size: 15px; line-height: 1.45; color: #183c36; cursor: pointer; transition: background .2s; }
-.sl-faq-pill:hover { background: #e4e4e4; }
+.sl-faq-pill { display: block; width: 100%; max-width: 380px; text-align: left; background: var(--cream); border: none; border-radius: 24px; padding: 16px 24px; margin: 0 0 12px; font-size: 15px; line-height: 1.45; color: #183c36; cursor: pointer; transition: background .2s; }
+.sl-faq-pill:hover { background: #eddec3; }
 .sl-faq-chat-right .sl-link { margin-top: 24px; display: inline-flex; font-size: 17px; font-weight: 600; }
 .sl-process::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 48px; background: #8ccee3; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); }
 .sl-footer { position: relative; }
@@ -1122,7 +1122,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   .sl-d-industries__sub { font-size: 15px; color: #183c36; margin: 0 0 30px; }
   .sl-d-cards-wrap { position: relative; }
   .sl-d-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 600px; margin: 0 auto; position: relative; z-index: 2; }
-  .sl-d-cards button { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #fffdf7; border: 2px solid #111; border-radius: 10px; padding: 14px 20px; color: #183c36; font-weight: 700; font-size: 14px; line-height: 1.32; cursor: pointer; font-family: inherit; text-align: left; width: 100%; }
+  .sl-d-cards button { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--cream); border: 2px solid #111; border-radius: 10px; padding: 14px 20px; color: #183c36; font-weight: 700; font-size: 14px; line-height: 1.32; cursor: pointer; font-family: inherit; text-align: left; width: 100%; }
   .sl-d-checkbox { flex: none; width: 22px; height: 22px; border: 2px solid #d14a35; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; }
   .sl-d-card--selected .sl-d-checkbox { background: #d14a35; }
   .sl-d-industries__kiwi { position: absolute; left: calc((100% - 100vw) / 2 + 48px); top: 50%; width: 170px; z-index: 1; transform: translateY(-50%); }
@@ -1133,7 +1133,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline
   /* Sales channels — refined to the mock. */
   .sl-story-rule--industries-end { display: none; }
   .sl-story-rule--channels { display: block; border-top: 1px solid rgba(24,60,54,.28); margin: 0 auto; }
-  .sl-zigzag-cream { height: 48px; background: #fffdf7; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
+  .sl-zigzag-cream { height: 48px; background: var(--cream); clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
   .sl-zigzag-mint { height: 48px; background: #b3e0eb; clip-path: polygon(0 0,100% 0,100% 30%,90% 48%,80% 22%,70% 57%,60% 28%,50% 68%,40% 30%,30% 60%,20% 28%,10% 58%,0 26%); margin-top: -1px; margin-bottom: -1px; }
   .sl-channels { display: block; position: relative; width: min(1120px, 100% - 48px); margin: 0 auto; padding: 60px 0 66px; }
   .sl-channels h2 { font-size: clamp(30px, 4.2vw, 50px); font-weight: 800; color: #111111; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 32px; padding-right: 200px; }
