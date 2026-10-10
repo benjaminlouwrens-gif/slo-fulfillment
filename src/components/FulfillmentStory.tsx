@@ -118,7 +118,8 @@ export function FulfillmentStory() {
     if (formValue) {
       window.dispatchEvent(new CustomEvent('slocal:select-category', { detail: formValue }));
     }
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+    window.dispatchEvent(new Event('slocal:skip-surf'));
+    document.getElementById('contact')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
   return <div className="sl-story">

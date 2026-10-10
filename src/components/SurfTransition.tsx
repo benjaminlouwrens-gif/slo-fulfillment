@@ -10,8 +10,18 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
   const scene = useRef<HTMLDivElement>(null);
   const pinkUnderlay = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  const [variant, setVariant] = useState<'mobile' | 'desktop' | null>(null);
 
   useEffect(() => {
+    const query = window.matchMedia('(max-width: 640px)');
+    const update = () => setVariant(query.matches ? 'mobile' : 'desktop');
+    update();
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (!variant) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const controller = new AbortController();
     const cache = new Map<number, ImageBitmap>();
@@ -24,11 +34,22 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     let failures = 0;
     let failed = false;
     let sceneState: SceneState = 'beforeWave';
-    let queuedStart = false;
     let lockScroll = false;
     let animationRaf = 0;
-    const variant = window.innerWidth <= 640 ? 'mobile' : 'desktop';
-    const limit = variant === 'mobile' ? 14 : 24;
+    let preparedFrames: number[] = [];
+    let viewportWidth = window.innerWidth;
+    let touchGestureUsed = false;
+    const limit = variant === 'mobile' ? 25 : 24;
+
+    const measureHeight = () => {
+      root.current?.style.removeProperty('--surf-height');
+      root.current?.parentElement?.style.removeProperty('--surf-height');
+      const height = scene.current?.offsetHeight;
+      if (height) {
+        root.current?.style.setProperty('--surf-height', `${height}px`);
+        root.current?.parentElement?.style.setProperty('--surf-height', `${height}px`);
+      }
+    };
 
     const disable = () => {
       enabled = false;
@@ -36,6 +57,9 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       sceneState = 'beforeWave';
       cancelAnimationFrame(animationRaf);
       setActive(false);
+      root.current?.setAttribute('data-transition', 'disabled');
+      root.current?.style.removeProperty('--surf-height');
+      root.current?.parentElement?.style.removeProperty('--surf-height');
       scene.current?.style.removeProperty('opacity');
       scene.current?.style.removeProperty('pointer-events');
       scene.current?.style.removeProperty('clip-path');
@@ -64,25 +88,14 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         const response = await fetch(`/assets/surf/${variant}/frame-${String(index).padStart(3, '0')}.webp`, { signal: controller.signal });
         if (!response.ok) throw new Error('Surf frame unavailable');
         const bitmap = await createImageBitmap(await response.blob());
-        if (stopped) { bitmap.close(); return; }
+        if (stopped || failed) { bitmap.close(); return; }
         cache.set(index, bitmap);
         while (cache.size > limit) {
           const farthest = [...cache.keys()].sort((a, b) => Math.abs(b - target) - Math.abs(a - target))[0];
           cache.get(farthest)?.close();
           cache.delete(farthest);
         }
-        if (!enabled && index === 0 && !reduced.matches) {
-          enabled = true;
-          setActive(true);
-          requestAnimationFrame(() => {
-            if (window.location.hash) document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
-            schedule();
-            if (queuedStart) {
-              queuedStart = false;
-              beginTransition('forward');
-            }
-          });
-        }
+        if (variant === 'desktop' && !enabled && index === 0) enable();
         if (index === target) schedule();
       } catch (error) {
         if (!stopped && (++failures >= 3 || index === 0)) { failed = true; disable(); }
@@ -90,6 +103,31 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         pending.delete(index);
         if (enabled && !failed && !cache.has(target)) schedule();
       }
+    };
+    const enable = () => {
+      if (stopped || failed || reduced.matches || !root.current) return;
+      // Never expand the runway under someone already browsing the page.
+      const directSection = location.hash && location.hash !== '#top';
+      if (window.scrollY > 14 || directSection) { disable(); return; }
+      measureHeight();
+      enabled = true;
+      root.current.dataset.transition = 'idle';
+      root.current.dataset.bufferedFrames = String(cache.size);
+      setActive(true);
+      requestAnimationFrame(schedule);
+    };
+    const prepareMobile = async () => {
+      // 25 decoded samples cover the whole filmed wave at its playback rate.
+      // No network fetch or bitmap decode happens during a mobile transition.
+      preparedFrames = [...new Set(Array.from({ length: 25 }, (_, i) => Math.round(i * (manifest.count - 1) / 24)))];
+      let next = 0;
+      await Promise.all(Array.from({ length: 4 }, async () => {
+        while (next < preparedFrames.length && !stopped && !failed) {
+          await requestFrame(preparedFrames[next++]);
+        }
+      }));
+      if (preparedFrames.every(index => cache.has(index))) enable();
+      else if (!stopped) disable();
     };
     const draw = () => {
       raf = 0;
@@ -99,7 +137,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
         return;
       }
       const rect = root.current.getBoundingClientRect();
-      const w = window.innerWidth;
+      const w = root.current.clientWidth;
       const h = scene.current.offsetHeight;
       const progress = clamp(-rect.top / Math.max(1, root.current.offsetHeight - h));
       const fade = clamp((progress - .92) / .08);
@@ -121,9 +159,11 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       canvas.current.dataset.progress = progress.toFixed(4);
       canvas.current.style.opacity = progress === 0 ? '0' : String(1 - fade);
       if (rect.bottom <= 0 || rect.top > h) return;
-      void requestFrame(target);
-      for (const offset of [1, -1, 2, -2, 3, -3]) {
-        if (pending.size < 5) void requestFrame(target + offset);
+      if (variant === 'desktop') {
+        void requestFrame(target);
+        for (const offset of [1, -1, 2, -2, 3, -3]) {
+          if (pending.size < 5) void requestFrame(target + offset);
+        }
       }
       const available = cache.has(target) ? target : [...cache.keys()].sort((a, b) => Math.abs(a - target) - Math.abs(b - target))[0];
       const bitmap = cache.get(available);
@@ -176,7 +216,7 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       if (!root.current) return null;
       const rect = root.current.getBoundingClientRect();
       const top = rect.top + window.scrollY;
-      const destination = Math.max(top, top + root.current.offsetHeight - window.innerHeight);
+      const destination = Math.max(top, top + root.current.offsetHeight - (scene.current?.offsetHeight || window.innerHeight));
       return { top, destination };
     };
     const beginTransition = (direction: 'forward' | 'backward') => {
@@ -215,8 +255,8 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       return true;
     };
     const requestStart = (direction: 'forward' | 'backward') => {
-      if (!enabled) {
-        if (direction === 'forward') queuedStart = true;
+      if (!enabled || failed || reduced.matches) {
+        if (direction === 'forward') root.current?.nextElementSibling?.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth' });
         return false;
       }
       return beginTransition(direction);
@@ -235,11 +275,14 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       if (direction === 'backward' && (sceneState !== 'waveComplete' || window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
       if (requestStart(direction)) event.preventDefault();
     };
-    const snapTouchStart = (event: TouchEvent) => { touchStartY = event.touches[0]?.clientY ?? 0; };
+    const snapTouchStart = (event: TouchEvent) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+      touchGestureUsed = false;
+    };
     const snapTouchMove = (event: TouchEvent) => {
       if (reduced.matches || failed || !root.current) return;
       const currentY = event.touches[0]?.clientY ?? touchStartY;
-      if (lockScroll) {
+      if (lockScroll || touchGestureUsed) {
         event.preventDefault();
         return;
       }
@@ -249,15 +292,39 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       const direction = touchStartY - currentY > 0 ? 'forward' : 'backward';
       if (direction === 'forward' && (sceneState !== 'beforeWave' || window.scrollY < bounds.top - 14 || window.scrollY > bounds.top + 14)) return;
       if (direction === 'backward' && (sceneState !== 'waveComplete' || window.scrollY <= bounds.top + 1 || window.scrollY > bounds.destination + 14)) return;
-      if (requestStart(direction)) event.preventDefault();
+      if (requestStart(direction)) { touchGestureUsed = true; event.preventDefault(); }
     };
+    const snapTouchEnd = () => { touchGestureUsed = false; };
     const onStartRequest = () => requestStart('forward');
+    const skipTransition = () => {
+      cancelAnimationFrame(animationRaf);
+      lockScroll = false;
+      if (!enabled) return;
+      sceneState = 'waveComplete';
+      root.current?.setAttribute('data-transition', 'complete');
+      releaseToStory();
+    };
     const onScroll = () => {
       const bounds = getBounds();
+      if (enabled && !lockScroll && bounds && window.scrollY >= bounds.destination - 1) {
+        sceneState = 'waveComplete';
+        root.current?.setAttribute('data-transition', 'complete');
+        releaseToStory();
+      }
       if (!lockScroll && sceneState === 'waveComplete' && bounds && window.scrollY <= bounds.top + 1) {
         sceneState = 'beforeWave';
         root.current?.setAttribute('data-transition', 'idle');
         reclaimScene();
+      }
+      schedule();
+    };
+    const resize = () => {
+      // Mobile browser chrome changes innerHeight while scrolling. Keep the
+      // scene height stable; remeasure only for a real layout-width change.
+      if (window.innerWidth !== viewportWidth) {
+        viewportWidth = window.innerWidth;
+        if (lockScroll) skipTransition();
+        measureHeight();
       }
       schedule();
     };
@@ -267,13 +334,19 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
     window.addEventListener('wheel', snapThroughWave, { passive: false, capture: true });
     window.addEventListener('touchstart', snapTouchStart, { passive: true });
     window.addEventListener('touchmove', snapTouchMove, { passive: false });
+    window.addEventListener('touchend', snapTouchEnd, { passive: true });
+    window.addEventListener('touchcancel', snapTouchEnd, { passive: true });
     window.addEventListener('slocal:start-surf', onStartRequest);
-    window.addEventListener('resize', schedule);
+    window.addEventListener('slocal:skip-surf', skipTransition);
+    window.addEventListener('resize', resize);
     reduced.addEventListener('change', preference);
     if (!reduced.matches) {
       fetch('/assets/surf/manifest.json', { signal: controller.signal })
         .then(response => { if (!response.ok) throw new Error('Surf unavailable'); return response.json(); })
-        .then((data: Manifest) => { manifest = data; return requestFrame(0); })
+        .then((data: Manifest) => {
+          manifest = data;
+          return variant === 'mobile' ? prepareMobile() : requestFrame(0);
+        })
         .catch(() => { if (!stopped) disable(); });
     }
     return () => {
@@ -286,11 +359,17 @@ export function SurfTransition({ children }: { children: React.ReactNode }) {
       window.removeEventListener('wheel', snapThroughWave, true);
       window.removeEventListener('touchstart', snapTouchStart);
       window.removeEventListener('touchmove', snapTouchMove);
+      window.removeEventListener('touchend', snapTouchEnd);
+      window.removeEventListener('touchcancel', snapTouchEnd);
       window.removeEventListener('slocal:start-surf', onStartRequest);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener('slocal:skip-surf', skipTransition);
+      window.removeEventListener('resize', resize);
       reduced.removeEventListener('change', preference);
+      setActive(false);
+      root.current?.style.removeProperty('--surf-height');
+      root.current?.parentElement?.style.removeProperty('--surf-height');
     };
-  }, []);
+  }, [variant]);
 
   return <div ref={root} className={`surf-transition${active ? ' surf-transition--active' : ''}`}>
     <div className="surf-stage">

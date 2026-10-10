@@ -44,3 +44,39 @@
 .collage-paper-note--right{right:5%;transform:rotate(7deg)}
 @media (min-width:641px){.collage-hero .collage-palm-cutout--right{bottom:0;right:-3%;z-index:10}.collage-hero .collage-palm-additional{top:15%;right:-2%;transform:scaleX(-1) rotate(-7deg)}.collage-hero .collage-kicker{transform:translateY(-76px);color:var(--ink);text-shadow:0 1px 2px #fff9ec}.collage-hero .collage-sign-cutout{display:none}}
 @media (max-width:640px){.collage-hero{min-height:100svh;display:block;padding-top:4.25rem}.collage-pastel-sun{top:-3%;right:-12%;width:142px}.collage-beach-horizon{bottom:0;left:-34%;width:190%;height:16%;transform:rotate(-1deg)}.collage-mountain-cutout{bottom:27%;left:-27%;width:154%;max-width:none}.collage-warehouse-cutout{z-index:3;left:-17%;bottom:11%;width:132%;max-width:none}.collage-copy{position:relative;z-index:12;width:100%;max-width:none;padding:2.25rem .85rem 0;overflow:visible}.collage-kicker{max-width:250px;margin:0 auto;font-size:.56rem;letter-spacing:.13em;line-height:1.35}.collage-copy h1{margin:.55rem auto 0;font-size:clamp(3.3rem,16vw,4.7rem);letter-spacing:-.1em;line-height:.78}.collage-copy h1 span,.collage-copy h1 strong{white-space:nowrap}.collage-road-cta{width:min(90vw,365px);min-width:0;margin:1.5rem auto 0;padding:.78rem 1.35rem .68rem;border-width:2px;font-size:.62rem}.collage-road-cta strong{font-size:1.08rem}.collage-road-cta__footer{font-size:.75rem}.collage-road-cta__footer svg{width:26px;height:26px}.collage-palm-cutout--left{left:-19%;bottom:27%;width:235px}.collage-palm-cutout--right{right:-17%;bottom:35%;width:180px}.collage-palm-additional{top:23%;right:-7%;width:105px}.collage-sun-paper-cutout{top:25%;right:-25%;width:245px}.collage-box-cutout{z-index:6;bottom:10%;width:145px}.collage-box-cutout--one{left:8%}.collage-box-cutout--two{left:57%;bottom:10%;width:112px}.collage-sign-cutout{z-index:7;right:-12%;bottom:24%;width:170px}.collage-torn-cream{z-index:8;bottom:5%;height:48px}.collage-torn-foreground{z-index:9}.collage-tape{left:-8%;bottom:-2%;width:145px}.collage-reference-note{left:-13%;bottom:24%;width:155px}.collage-paper-note{display:none}}
+
+/* Give each letter room, with the long second line fitted independently. */
+.collage-copy h1 { letter-spacing: -.035em; line-height: 1; }
+.collage-copy h1 strong {
+  margin-top: .1em;
+  font-size: clamp(3rem, 7.7vw, 6rem);
+  letter-spacing: -.035em;
+  line-height: 1.05;
+}
+@media (max-width:640px) {
+  .collage-copy h1 { letter-spacing: -.035em; line-height: 1; }
+  .collage-copy h1 span { line-height: .98; }
+  .collage-copy h1 strong {
+    margin-top: .12em;
+    font-size: clamp(2.25rem, 11.6vw, 3.8rem);
+    letter-spacing: -.035em;
+    line-height: 1.1;
+  }
+}
+
+/* One measured height for the scene, its scroll runway, and the landing. */
+.surf-transition--active { height: calc(var(--surf-height, 100svh) * 3); }
+.surf-transition--active .surf-stage,
+.surf-transition--active .surf-scene { height: var(--surf-height, 100svh); }
+.surf-transition--active .collage-hero { min-height: var(--surf-height, 100svh); }
+.surf-transition--active + .sl-story { margin-top: calc(-1 * var(--surf-height, 100svh)); }
+.surf-pink-underlay { background: var(--cream); }
+@media (max-width:640px) {
+  .surf-transition--active { height: calc(var(--surf-height, 100svh) * 2); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .surf-transition--active { height: auto; }
+  .surf-transition--active .surf-stage,
+  .surf-transition--active .surf-scene { height: auto; }
+  .surf-transition--active + .sl-story { margin-top: 0; }
+}

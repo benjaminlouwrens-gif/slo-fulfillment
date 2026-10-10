@@ -16,8 +16,9 @@ export const Header: React.FC = () => {
 
   const scrollToSection = (id: string) => {
     setMenuOpen(false);
+    window.dispatchEvent(new Event('slocal:skip-surf'));
     const element = document.getElementById(id.replace('#', ''));
-    element?.scrollIntoView({ behavior: 'smooth' });
+    element?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
 
   return (
